@@ -1,4 +1,5 @@
 ﻿using ProjectGates.Model.Entities.Passive;
+using ProjectGates.Model.Resources;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ProjectGates.Model.Vistas
         public VistaRunning()
         {
             AddEntity(new Title("Running"));
-            AddEntity(new Logo(Resources.ResourceHolderTextures.UniHolder.GetResource(Resources.ResourceHolderTextures.Key.Logo)));
+            AddEntity(new Logo(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Logo)));
         }
 
         public override void OnKeyPressed(object sender, EventArgs args)

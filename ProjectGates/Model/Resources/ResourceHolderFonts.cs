@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Resources
 {
-    class ResourceHolderFonts : ResourceHolder<Font>
+    class ResourceFonts : ResourceHolder<Font>
     {
         public enum Key
         {
             Main
         }
 
-        public static ResourceHolderFonts UniHolder;
-
-        static ResourceHolderFonts()
+        static ResourceFonts()
         {
-            UniHolder = new ResourceHolderFonts();
-            UniHolder.AddResource(Key.Main, ".\\Model\\Resources\\Fonts\\BLACK.ttf");
+            AddGlobalResource(Key.Main, new Font(".\\Model\\Resources\\Fonts\\BLACK.ttf"));
         }
 
         public override void AddResource(Enum key, string path)
         {
-            dictionary.Add(key, new Font(path));
+            resource.Add(key, new Font(path));
+        }
+
+        public static new Font GetGlobalResource(Enum key)
+        {
+            globalResource.TryGetValue(key, out Font result);
+            return result;
         }
     }
 }

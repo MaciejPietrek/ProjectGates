@@ -18,11 +18,29 @@ namespace ProjectGates.Model.Vistas
         
         protected IEntity AddEntity(IEntity entity, string ID)
         {
+            if(entity is EventSink)
+            {
+                var sink = entity.AsEventSink();
+                MouseScrolled += sink.OnMouseScrolled;
+                MousePressed += sink.OnMousePressed;
+                MouseMoved += sink.OnMouseMoved;
+                KeyPressed += sink.OnKeyPressed;
+                KeyReleassed += sink.OnKeyReleassed;
+            }
             EntityDictionary.Add(ID, entity);
             return entity;
         }
         protected IEntity AddEntity(IEntity entity)
         {
+            if (entity is EventSink)
+            {
+                var sink = entity.AsEventSink();
+                MouseScrolled += sink.OnMouseScrolled;
+                MousePressed += sink.OnMousePressed;
+                MouseMoved += sink.OnMouseMoved;
+                KeyPressed += sink.OnKeyPressed;
+                KeyReleassed += sink.OnKeyReleassed;
+            }
             EntitySet.Add(entity);
             return entity;
         }

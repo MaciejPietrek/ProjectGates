@@ -13,11 +13,11 @@ namespace ProjectGates.Model.Vistas
 {
     class VistaStarted : Vista
     {
-        private static ResourceHolderTextures textures;
+        private static ResourceTextures textures;
 
         static VistaStarted()
         {
-            textures = new ResourceHolderTextures();
+            textures = new ResourceTextures();
             textures.AddResource(TextureEnum.background, ".\\Model\\Resources\\Textures\\BACKGROUND.png");
         }
 
@@ -28,7 +28,7 @@ namespace ProjectGates.Model.Vistas
 
         public VistaStarted()
         {
-            AddEntity(new Background(ResourceHolderTextures.UniHolder.GetResource(ResourceHolderTextures.Key.Background)));
+            AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
             AddEntity(new Background(textures.GetResource(TextureEnum.background), true, false));
         }
 

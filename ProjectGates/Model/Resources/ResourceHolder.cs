@@ -8,27 +8,41 @@ namespace ProjectGates.Model.Resources
 {
     class ResourceHolder<T>
     {
-        protected Dictionary<Enum, T> dictionary;
+        protected Dictionary<Enum, T> resource;
+        protected static Dictionary<Enum, T> globalResource;
 
         public ResourceHolder()
         {
-            dictionary = new Dictionary<Enum, T>();
+            resource = new Dictionary<Enum, T>();
+        }
+        static ResourceHolder()
+        {
+            globalResource = new Dictionary<Enum, T>();
         }
 
         public void AddResource(Enum key, T resource)
         {
-            dictionary.Add(key, resource);
+            this.resource.Add(key, resource);
         }
-
         public virtual void AddResource(Enum key, string path)
         {
-            return;
+            throw new NotImplementedException();
+        }
+
+        public static void AddGlobalResource(Enum key, T resource)
+        {
+            globalResource.Add(key, resource);
         }
 
         public T GetResource(Enum key)
         {
-            T result;
-            dictionary.TryGetValue(key, out result);
+            resource.TryGetValue(key, out T result);
+            return result;
+        }
+
+        public static T GetGlobalResource(Enum key)
+        {
+            globalResource.TryGetValue(key, out T result);       
             return result;
         }
     }

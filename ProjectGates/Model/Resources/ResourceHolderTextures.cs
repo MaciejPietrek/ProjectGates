@@ -7,26 +7,23 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Resources
 {
-    class ResourceHolderTextures : ResourceHolder<Texture>
+    class ResourceTextures : ResourceHolder<Texture>
     {
         public enum Key
         {
             Logo,
             Background
         }
-
-        public static ResourceHolderTextures UniHolder;
-
-        static ResourceHolderTextures()
+        
+        static ResourceTextures()
         {
-            UniHolder = new ResourceHolderTextures();
-            UniHolder.AddResource(Key.Logo, ".\\Model\\Resources\\Textures\\LOGO.png");
-            UniHolder.AddResource(Key.Background, ".\\Model\\Resources\\Textures\\BACKGROUND_GRID.jpg");
+            AddGlobalResource(Key.Logo, new Texture(".\\Model\\Resources\\Textures\\LOGO.png"));
+            AddGlobalResource(Key.Background, new Texture(".\\Model\\Resources\\Textures\\BACKGROUND_GRID.jpg"));
         }
 
         public override void AddResource(Enum key, string path)
         {
-            dictionary.Add(key, new Texture(path));
+            resource.Add(key, new Texture(path));
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using ProjectGates.Model.Entities.Active;
+﻿using ProjectGates.Model.Entities;
+using ProjectGates.Model.Entities.Active;
 using ProjectGates.Model.Entities.Passive;
 using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;

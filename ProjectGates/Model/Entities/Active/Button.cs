@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using ProjectGates.Model.Resources;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
@@ -15,11 +16,11 @@ namespace ProjectGates.Model.Entities.Active
         private RectangleShape Shape { get; set; }
 
 
-        public Field Field
+        public PGField Field
         {
             get
             {
-                return new Field(Shape.Position, Shape.Size);
+                return new PGField(Shape.Position, Shape.Size);
             }
         }
         public Color Color
@@ -40,18 +41,17 @@ namespace ProjectGates.Model.Entities.Active
             ExceptionChecker.CheckPerceventagergumentException(fontSize, positionX, positionY);
 
             var tmp = Engine.MainWindow.Size;
+            
+            Text = new Text();
+            Text.DisplayedString = text;
+            Text.Font = ResourceFonts.GetGlobalResource(ResourceFonts.Key.Main);
+            Text.Position = new Vector2f(tmp.X * positionX, tmp.Y * positionY);
+            Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * fontSize);
+            Text.Color = Color.White;
+            
 
-            Text = new Text(text, Resources.ResourceHolderFonts.UniHolder.GetResource(Resources.ResourceHolderFonts.Key.Main))
-            {
-                Position = new Vector2f(tmp.X * positionX, tmp.Y * positionY),
-                CharacterSize = (uint)(Engine.MainWindow.Size.Y * fontSize),
-                Color = Color.White,
-            };
-
-            var bounds = Text.GetGlobalBounds();
-
-            Shape = new RectangleShape(new Vector2f(bounds.Width, bounds.Height));
-            Shape.Position = new Vector2f(bounds.Left, bounds.Top);
+            PGField bounds = Text.GetGlobalBounds();
+            Shape = (RectangleShape)bounds;
             Shape.FillColor = Color.Transparent;
 
             WhenMouseMoved = ((sender, args) =>

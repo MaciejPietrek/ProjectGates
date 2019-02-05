@@ -1,6 +1,7 @@
 ﻿using ProjectGates.Model.Entities;
 using ProjectGates.Model.Entities.Active;
 using ProjectGates.Model.Entities.Passive;
+using ProjectGates.Model.Resources;
 using SFML.Graphics;
 using SFML.Window;
 using System;
@@ -16,10 +17,10 @@ namespace ProjectGates.Model.Vistas
         public VistaPaused()
         {
             var button1 = new Button("return", 0.05f, 0.0f, 0.95f);
-            AddEntity(new Background(Resources.ResourceHolderTextures.UniHolder.GetResource(Resources.ResourceHolderTextures.Key.Background)));
+            AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
             AddEntity(new Title("Paused"));
             AddEntity(new CenteredField(0.9f, 0.75f));
-            AddEntity(new Logo(Resources.ResourceHolderTextures.UniHolder.GetResource(Resources.ResourceHolderTextures.Key.Logo)));
+            AddEntity(new Logo(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Logo)));
             AddEntity(button1).AsEventSink().WhenMousePressed = ((sender, args) =>
             {
                 var rectangle = button1.Field;

@@ -1,6 +1,7 @@
 ﻿using ProjectGates.Model.Entities;
 using ProjectGates.Model.Entities.Active;
 using ProjectGates.Model.Entities.Passive;
+using ProjectGates.Model.Resources;
 using SFML.Graphics;
 using SFML.Window;
 using System;
@@ -19,9 +20,9 @@ namespace ProjectGates.Model.Vistas
             var button2 = new Button("New", 0.05f, 0.3f, 0.15f);
             var button3 = new Button("Load", 0.05f, 0.3f, 0.2f);
             var button4 = new Button("Settings", 0.05f, 0.3f, 0.25f);
-            var bg      = new Background(Resources.ResourceHolderTextures.UniHolder.GetResource(Resources.ResourceHolderTextures.Key.Background));
+            var bg      = new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background));
             var title   = new Title("Main Menu");
-            var logo    = new Logo(Resources.ResourceHolderTextures.UniHolder.GetResource(Resources.ResourceHolderTextures.Key.Logo));
+            var logo    = new Logo(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Logo));
             var field   = new CenteredField(0.4f, 0.8f);
             AddEntity(bg);
             AddEntity(title);

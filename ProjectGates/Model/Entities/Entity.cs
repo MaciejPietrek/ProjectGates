@@ -8,17 +8,178 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Entities
 {
-    struct Field
+    struct PGFloat
     {
-        public Vector2f Position { get; set; }
-        public Vector2f Size { get; set; }
+        public float Value { get; set; }
+        public PGFloat(float value)
+        {
+            Value = value;
+        }
+        public static implicit operator PGFloat(float value)
+        {
+            return new PGFloat(value);
+        }
+        public static implicit operator float(PGFloat pGFloat)
+        {
+            return pGFloat.Value;
+        }
+    }
 
-        public Field(Vector2f position, Vector2f size)
+    struct PGPoint
+    {
+        public PGFloat X { get; set; }
+        public PGFloat Y { get; set; }
+        public PGPoint(PGFloat X, PGFloat Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
+
+        public static implicit operator PGPoint(Vector2f point)
+        {
+            return new PGPoint(point.X, point.Y);
+        }
+        public static implicit operator PGPoint(Vector2i point)
+        {
+            return new PGPoint(point.X, point.Y);
+        }
+        public static implicit operator PGPoint(Vector2u point)
+        {
+            return new PGPoint(point.X, point.Y);
+        }
+
+        public static explicit operator PGPoint(PGSize size)
+        {
+            return new PGPoint(size.X, size.Y);
+        }
+        public static explicit operator PGPoint(PGVector vector)
+        {
+            return new PGPoint(vector.X, vector.Y);
+        }
+        public static explicit operator Vector2f(PGPoint point)
+        {
+            return new Vector2f(point.X, point.Y);
+        }
+    }
+
+    struct PGSize
+    {
+        public PGFloat X { get; set; }
+        public PGFloat Y { get; set; }
+        public PGSize(PGFloat X, PGFloat Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
+
+        public static implicit operator PGSize(Vector2f size)
+        {
+            return new PGSize(size.X, size.Y);
+        }
+        public static implicit operator PGSize(Vector2i size)
+        {
+            return new PGSize(size.X, size.Y);
+        }
+        public static implicit operator PGSize(Vector2u size)
+        {
+            return new PGSize(size.X, size.Y);
+        }
+
+        public static explicit operator PGSize(PGPoint point)
+        {
+            return new PGSize(point.X, point.Y);
+        }
+        public static explicit operator PGSize(PGVector vector)
+        {
+            return new PGSize(vector.X, vector.Y);
+        }
+        public static explicit operator Vector2f(PGSize size)
+        {
+            return new Vector2f(size.X, size.Y);
+        }
+    }
+
+    struct PGVector
+    {
+        public PGFloat X { get; set; }
+        public PGFloat Y { get; set; }
+        public PGVector(PGFloat X, PGFloat Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
+
+        public static implicit operator PGVector(Vector2f vector)
+        {
+            return new PGVector(vector.X, vector.Y);
+        }
+        public static implicit operator PGVector(Vector2i vector)
+        {
+            return new PGVector(vector.X, vector.Y);
+        }
+        public static implicit operator PGVector(Vector2u vector)
+        {
+            return new PGVector(vector.X, vector.Y);
+        }
+
+        public static explicit operator PGVector(PGPoint point)
+        {
+            return new PGVector(point.X, point.Y);
+        }
+        public static explicit operator PGVector(PGSize size)
+        {
+            return new PGVector(size.X, size.Y);
+        }
+        public static explicit operator Vector2f(PGVector vector)
+        {
+            return new Vector2f(vector.X, vector.Y);
+        }
+
+        public static PGVector operator +(PGVector first, PGVector second)
+        {
+            return new PGVector(first.X + second.X, first.Y + second.Y);
+        }
+        public static PGVector operator -(PGVector first, PGVector second)
+        {
+            return new PGVector(first.X - second.X, first.Y - second.Y);
+        }
+        public static PGVector operator *(PGVector first, PGVector second)
+        {
+            return new PGVector(first.X * second.X, first.Y * second.Y);
+        }
+        public static PGVector operator /(PGVector first, PGVector second)
+        {
+            return new PGVector(first.X / second.X, first.Y / second.Y);
+        }
+    }
+
+    struct PGField
+    {
+        public PGPoint Position { get; set; }
+        public PGSize Size { get; set; }
+        public PGField(PGPoint position, PGSize size)
         {
             Position = position;
             Size = size;
         }
-        public bool Contains(Vector2f point)
+
+        public static implicit operator PGField(RectangleShape field)
+        {
+            return new PGField(field.Position, field.Size);
+        }
+        public static implicit operator PGField(FloatRect field)
+        {
+            return new PGField(new PGPoint(field.Left, field.Top), new PGSize(field.Width, field.Height));
+        }
+
+        public static explicit operator RectangleShape(PGField field)
+        {
+            var result = new RectangleShape((Vector2f)field.Size);
+            result.Position = (Vector2f)field.Position;
+            return result;
+        }
+
+        public bool Contains(PGPoint point)
         {
             if (point.X > Position.X + Size.X)
                 return false;
@@ -51,7 +212,7 @@ namespace ProjectGates.Model.Entities
 
     interface IField
     {
-        Field Field { get; }
+        PGField Field { get; }
     }
 
     interface IEntity : Drawable
