@@ -9,9 +9,23 @@ using SFML.Graphics;
 namespace ProjectGates.Model.Entities.Passive
 {
 
-    class Title : PassiveEntity
+    class Title : PassiveEntity, ITransparent
     {
         private Text Text { get; set; }
+
+        public PGPercent Transparency
+        {
+            get
+            {
+                return (PGPercent)((PGFloat)Text.Color.A / 255);
+            }
+            set
+            {
+                var old = Text.Color;
+                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
+                Text.Color = newColor;
+            }
+        }
 
         public Title(string text)
         {

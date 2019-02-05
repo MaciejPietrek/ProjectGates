@@ -15,6 +15,8 @@ namespace ProjectGates.Model.Vistas
     {
         private static ResourceTextures textures;
 
+        private int count = 0;
+
         static VistaStarted()
         {
             textures = new ResourceTextures();
@@ -39,7 +41,28 @@ namespace ProjectGates.Model.Vistas
             if (arguments.Code == Keyboard.Key.Escape)
                 Engine.Vista = Engine.SP_Closing;
             else
-                Engine.Vista = Engine.SP_Menu;
+            {
+                OnDraw += ((target, state) =>
+                {
+                    int n = 300;
+                    var view = Engine.MainWindow.GetView();
+                    view.Zoom(0.998f);
+                    Engine.MainWindow.SetView(view);
+                    count++;
+                    foreach (var entity in Entities)
+                    {
+                        if (entity is ITransparent e)
+                            e.Transparency = (PGPercent)((float)e.Transparency - (float)1 / 200);
+                    }
+                    if (count >= n)
+                    {
+                        count = 0;
+                        OnDraw = DefaultOnDraw;
+                        Engine.SetVistaBefore(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
+                        Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
+                    }
+                });
+            }
             #endregion
         }
     }

@@ -21,7 +21,6 @@ namespace ProjectGates.Model.Vistas
             var arguments = (KeyEventArgs)args;
             if (arguments.Code == Keyboard.Key.Escape)
                 Engine.Vista = Engine.SP_Menu;
-
         }
     }
 }

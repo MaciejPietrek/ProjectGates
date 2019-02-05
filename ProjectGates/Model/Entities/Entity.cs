@@ -25,6 +25,49 @@ namespace ProjectGates.Model.Entities
         }
     }
 
+    struct PGPercent
+    {
+        private float value;
+        public float Value
+        {
+            get
+            {
+                return value;
+            }
+            set
+            {
+                if (value > 1)
+                    throw new Exception("Percept over 100%");
+                if (value < 0)
+                    throw new Exception("Percept under 0%");
+                this.value = value;
+            }
+        }
+        public PGPercent(float value)
+        {
+            this.value = value;
+        }
+        public static explicit operator PGPercent(PGFloat value)
+        {
+            if (value > 1) return new PGPercent(0);
+            if (value < 0) return new PGPercent(1); 
+            return new PGPercent(value);
+        }
+        public static explicit operator PGPercent(float value)
+        {
+            if (value > 1) return new PGPercent(1);
+            if (value < 0) return new PGPercent(0);
+            return new PGPercent(value);
+        }
+        public static explicit operator float(PGPercent value)
+        {
+            return value.Value;
+        }
+        public static explicit operator PGFloat(PGPercent value)
+        {
+            return value.value;
+        }
+    }
     struct PGPoint
     {
         public PGFloat X { get; set; }
@@ -207,12 +250,22 @@ namespace ProjectGates.Model.Entities
 
     interface IColor
     {
-        Color Color { get; }
+        Color Color { get; set; }
     }
 
     interface IField
     {
         PGField Field { get; }
+    }
+
+    interface ITransparent
+    {
+        PGPercent Transparency { get; set; }
+    }
+
+    interface IGraphic : IField, IColor, ITransparent
+    {
+
     }
 
     interface IEntity : Drawable

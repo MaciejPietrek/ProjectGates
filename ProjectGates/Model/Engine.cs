@@ -45,10 +45,11 @@ namespace ProjectGates.Model
                 MainWindow.KeyReleased += vista.OnKeyReleassed;
             }
         }
-        public static void SetVista(Vista newVista, Func<bool> endCondition, Action<Time> Update)
+        public static void SetVistaBefore(Vista vista, Action<RenderTarget, RenderStates> action)
         {
-            Instance.Run(endCondition, Update);
-            vista = newVista;
+            Vista = vista;
+            Vista.OnDraw = action;
+            Vista.OnDraw += Vista.DefaultOnDraw;
         }
         
         //Here add ALL possible contant vistas!

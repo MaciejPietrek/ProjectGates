@@ -10,7 +10,7 @@ using SFML.System;
 
 namespace ProjectGates.Model.Entities.Passive
 {
-    class Background : PassiveEntity
+    class Background : PassiveEntity, ITransparent
     {
         private Sprite Sprite { get; }
 
@@ -67,7 +67,20 @@ namespace ProjectGates.Model.Entities.Passive
                 }
             }
         }
-
+        
+        public PGPercent Transparency
+        {
+            get
+            {
+                return (PGPercent)((PGFloat)Sprite.Color.A/255);
+            }
+            set
+            {
+                var old = Sprite.Color;
+                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
+                Sprite.Color = newColor;
+            }
+        }
 
         public Background(Texture texture, bool fillWidth = true, bool fillHeight = true)
         {

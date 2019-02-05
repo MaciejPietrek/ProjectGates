@@ -7,10 +7,24 @@ using SFML.Graphics;
 
 namespace ProjectGates.Model.Entities.Passive
 {
-    class Logo : PassiveEntity
+    class Logo : PassiveEntity, ITransparent
     {
         private Sprite Sprite { get; }
-        
+
+        public PGPercent Transparency
+        {
+            get
+            {
+                return (PGPercent)((PGFloat)Sprite.Color.A / 255);
+            }
+            set
+            {
+                var old = Sprite.Color;
+                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
+                Sprite.Color = newColor;
+            }
+        }
+
         public Logo(Texture texture)
         {
             Sprite = new Sprite

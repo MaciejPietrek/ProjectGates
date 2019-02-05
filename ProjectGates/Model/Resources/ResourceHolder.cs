@@ -20,7 +20,7 @@ namespace ProjectGates.Model.Resources
             globalResource = new Dictionary<Enum, T>();
         }
 
-        public void AddResource(Enum key, T resource)
+        public void         AddResource(Enum key, T resource)
         {
             this.resource.Add(key, resource);
         }
@@ -29,17 +29,16 @@ namespace ProjectGates.Model.Resources
             throw new NotImplementedException();
         }
 
-        public static void AddGlobalResource(Enum key, T resource)
+        protected static void AddGlobalResource(Enum key, T resource)
         {
             globalResource.Add(key, resource);
         }
 
-        public T GetResource(Enum key)
+        public T        GetResource(Enum key)
         {
             resource.TryGetValue(key, out T result);
             return result;
         }
-
         public static T GetGlobalResource(Enum key)
         {
             globalResource.TryGetValue(key, out T result);       

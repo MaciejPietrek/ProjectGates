@@ -14,8 +14,36 @@ namespace ProjectGates.Model.Vistas
 {
     class VistaMenu : Vista
     {
+        public Action<RenderTarget, RenderStates> OnLoad;
+        private int count = 0;
+
         public VistaMenu()
         {
+            OnLoad = ((state, target) =>
+            {
+                if(count == 0)
+                {
+                    foreach (var entity in Entities)
+                    {
+                        if (entity is ITransparent e)
+                            e.Transparency = (PGPercent)0;
+                    }
+                }
+                foreach (var entity in Entities)
+                {
+                    if (entity is ITransparent e)
+                        e.Transparency = (PGPercent)((float)e.Transparency + 0.02);
+                }
+                count++;
+                if(count >= 100)
+                {
+                    count = 0;
+                    OnDraw = DefaultOnDraw;
+                }
+            });
+
+            OnDraw += OnLoad;
+
             var button1 = new Button("Continue", 0.05f, 0.3f, 0.1f);
             var button2 = new Button("New", 0.05f, 0.3f, 0.15f);
             var button3 = new Button("Load", 0.05f, 0.3f, 0.2f);
