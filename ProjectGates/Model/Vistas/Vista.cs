@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Vistas
 {
-    abstract class Vista : EventSink, IEventHub
+    abstract class Vista : EventSink,
     {
         private Dictionary<string, IEntity> EntityDictionary { get; set; }
         private HashSet<IEntity> EntitySet { get; set; }
@@ -20,7 +20,6 @@ namespace ProjectGates.Model.Vistas
         {
             if (entity is EventSink)
             {
-                var sink = entity.AsEventSink();
                 MouseScrolled += sink.OnMouseScrolled;
                 MousePressed += sink.OnMousePressed;
                 MouseMoved += sink.OnMouseMoved;
@@ -34,7 +33,6 @@ namespace ProjectGates.Model.Vistas
         {
             if (entity is EventSink)
             {
-                var sink = entity.AsEventSink();
                 MouseScrolled += sink.OnMouseScrolled;
                 MousePressed += sink.OnMousePressed;
                 MouseMoved += sink.OnMouseMoved;
