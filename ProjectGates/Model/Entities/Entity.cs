@@ -58,13 +58,13 @@ namespace ProjectGates.Model.Entities
             return value.value;
         }
 
-        public static explicit operator PGPercent(PGFloat value)
+        public static implicit operator PGPercent(PGFloat value)
         {
             if (value > 1) return new PGPercent(0);
             if (value < 0) return new PGPercent(1);
             return new PGPercent(value);
         }
-        public static explicit operator PGPercent(float value)
+        public static implicit operator PGPercent(float value)
         {
             if (value > 1) return new PGPercent(1);
             if (value < 0) return new PGPercent(0);
@@ -281,7 +281,7 @@ namespace ProjectGates.Model.Entities
         public abstract void Draw(RenderTarget target, RenderStates states);
     }
 
-    abstract class ActiveEntity : EventSink, IEntity
+    abstract class ActiveEntity : IEntity
     {
         public abstract void Draw(RenderTarget target, RenderStates states);
     }

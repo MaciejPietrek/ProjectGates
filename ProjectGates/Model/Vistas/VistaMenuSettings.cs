@@ -14,14 +14,13 @@ namespace ProjectGates.Model.Vistas
         {
             AddEntity(new Title("Settings"));
             AddEntity(new CenteredField(0.9f, 0.75f));
-        }
 
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Menu;
-
+            Sink.WhenKeyPressed = ((sender, args) =>
+            {
+                var arguments = (KeyEventArgs)args;
+                if (arguments.Code == Keyboard.Key.Escape)
+                    Engine.Vista = Engine.SP_Menu;
+            });
         }
     }
 }

@@ -19,6 +19,7 @@ namespace ProjectGates.Model.Vistas
 
         public VistaMenu()
         {
+
             OnLoad = (() =>
             {
                 if(count == 0)
@@ -91,16 +92,6 @@ namespace ProjectGates.Model.Vistas
                     Engine.Vista = new VistaMenuSettings();
                 }
             });
-        }
-
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Closing;
-            #endregion
-            base.OnKeyPressed(sender, args);
         }
     }
 }

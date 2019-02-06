@@ -1,4 +1,5 @@
-﻿using ProjectGates.Model.Entities.Passive;
+﻿using ProjectGates.Model.Entities.Active;
+using ProjectGates.Model.Entities.Passive;
 using ProjectGates.Model.Resources;
 using SFML.Window;
 using System;
@@ -11,19 +12,27 @@ namespace ProjectGates.Model.Vistas
 {
     class VistaRunning : Vista
     {
+        private ResourceTextures Textures { get; set; }
+
+
         public VistaRunning()
         {
             AddEntity(new Title("Running"));
             AddEntity(new Logo(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Logo)));
-        }
+            AddEntity(new PointGrid(15)).AsEventSink().Connect(Hub);
 
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_PausedMenu;
-            #endregion
+            Sink.WhenKeyPressed = ((sender, args) =>
+            {
+                var arguments = (KeyEventArgs)args;
+                if (arguments.Code == Keyboard.Key.Escape)
+                    Engine.Vista = Engine.SP_PausedMenu;
+            });
+
+            Sink.WhenKeyReleassed = ((sender, args) =>
+            {
+                var arg = (KeyEventArgs)args;
+                Console.WriteLine(arg.Code.ToString());
+            });
         }
     }
 }

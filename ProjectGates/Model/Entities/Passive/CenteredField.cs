@@ -12,10 +12,8 @@ namespace ProjectGates.Model.Entities.Passive
     {
         private RectangleShape shape;
 
-        public CenteredField(float screenXShare, float screenYShare)
+        public CenteredField(PGPercent screenXShare, PGPercent screenYShare)
         {
-            ExceptionChecker.CheckPerceventagergumentException(screenXShare, screenYShare);
-
             var size = new Vector2f(Engine.MainWindow.Size.X * screenXShare, Engine.MainWindow.Size.Y * screenYShare);
             shape = new RectangleShape(size);
             

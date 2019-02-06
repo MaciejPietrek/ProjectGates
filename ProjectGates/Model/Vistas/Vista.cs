@@ -11,35 +11,25 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Vistas
 {
-    abstract class Vista : EventSink, IEventHub
+    abstract class Vista : IEventNode
     {
         private Dictionary<string, IEntity> EntityDictionary { get; set; }
         private HashSet<IEntity> EntitySet { get; set; }
 
         protected IEntity AddEntity(IEntity entity, string ID)
         {
-            if (entity is EventSink)
+            if (entity is IEventSink eventSink)
             {
-                var sink = entity.AsEventSink();
-                MouseScrolled += sink.OnMouseScrolled;
-                MousePressed += sink.OnMousePressed;
-                MouseMoved += sink.OnMouseMoved;
-                KeyPressed += sink.OnKeyPressed;
-                KeyReleassed += sink.OnKeyReleassed;
+                eventSink.Sink.Connect(Hub);
             }
             EntityDictionary.Add(ID, entity);
             return entity;
         }
         protected IEntity AddEntity(IEntity entity)
         {
-            if (entity is EventSink)
+            if (entity is IEventSink eventSink)
             {
-                var sink = entity.AsEventSink();
-                MouseScrolled += sink.OnMouseScrolled;
-                MousePressed += sink.OnMousePressed;
-                MouseMoved += sink.OnMouseMoved;
-                KeyPressed += sink.OnKeyPressed;
-                KeyReleassed += sink.OnKeyReleassed;
+                eventSink.Sink.Connect(Hub);
             }
             EntitySet.Add(entity);
             return entity;
@@ -60,10 +50,7 @@ namespace ProjectGates.Model.Vistas
                 return reesult;
             }
         }
-
-        public readonly Action DefaultOnDraw;
-        public readonly Action<Time> DefaultOnUpdate;
-
+        
         /* OnStart & OnExit deprecated
         private int Count = 100;
 
@@ -130,8 +117,24 @@ namespace ProjectGates.Model.Vistas
         }
         */
 
+        public readonly Action DefaultOnDraw;
+        public readonly Action<Time> DefaultOnUpdate;
+
         public Action OnDraw { get; set; }
         public Action<Time> OnUpdate { get; set; }
+
+        public EventHub Hub { get; }
+
+        public EventSink Sink { get; }
+
+        public virtual void Draw()
+        {
+            OnDraw();
+        }
+        public virtual void Update(Time time)
+        {
+            OnUpdate(time);
+        }
 
         protected Vista()
         {
@@ -147,53 +150,9 @@ namespace ProjectGates.Model.Vistas
             {
                 return;
             });
-            
+
             OnDraw = DefaultOnDraw;
             OnUpdate = DefaultOnUpdate;
         }
-
-        public virtual void Draw()
-        {
-            OnDraw();
-        }
-        public virtual void Update(Time time)
-        {
-            OnUpdate(time);
-        }
-
-        #region Event handlers
-        public override void OnMouseScrolled(object sender, EventArgs args)
-        {
-            base.OnMouseScrolled(sender, args);
-            MouseScrolled?.Invoke(sender, args);
-        }
-        public override void OnMousePressed(object sender, EventArgs args)
-        {
-            base.OnMousePressed(sender, args);
-            MousePressed?.Invoke(sender, args);
-        }
-        public override void OnMouseMoved(object sender, EventArgs args)
-        {
-            base.OnMouseMoved(sender, args);
-            MouseMoved?.Invoke(sender, args);
-        }
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            base.OnMousePressed(sender, args);
-            KeyPressed?.Invoke(sender, args);
-        }
-        public override void OnKeyReleassed(object sender, EventArgs args)
-        {
-            base.OnKeyReleassed(sender, args);
-            KeyReleassed?.Invoke(sender, args);
-        }
-        #endregion
-
-        public event EventHandler MouseScrolled;
-        public event EventHandler MousePressed;
-        public event EventHandler MouseMoved;
-        public event EventHandler KeyPressed;
-        public event EventHandler KeyReleassed;
-
     }
 }

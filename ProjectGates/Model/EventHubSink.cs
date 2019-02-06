@@ -8,15 +8,49 @@ namespace ProjectGates.Model
 {
     interface IEventHub
     {
-        event EventHandler MouseScrolled;
-        event EventHandler MousePressed;
-        event EventHandler MouseMoved;
-        event EventHandler KeyPressed;
-        event EventHandler KeyReleassed;
+        EventHub Hub { get; }
     }
 
-    abstract class EventSink
+    interface IEventSink
     {
+        EventSink Sink { get; }
+    }
+
+    interface IEventNode : IEventHub, IEventSink
+    {
+
+    }
+
+    class EventHub : IEventHub
+    {
+        public event EventHandler MouseScrolled;
+        public event EventHandler MousePressed;
+        public event EventHandler MouseMoved;
+        public event EventHandler KeyPressed;
+        public event EventHandler KeyReleassed;
+
+        public EventHub Hub { get { return this; } }
+    } 
+
+    class EventSink : IEventSink
+    {
+        public void Connect(EventHub hub)
+        {
+            hub.KeyPressed += this.OnKeyPressed;
+            hub.KeyReleassed += this.OnKeyReleassed;
+            hub.MouseMoved += this.OnMouseMoved;
+            hub.MousePressed += this.OnMousePressed;
+            hub.MouseScrolled += this.OnMouseScrolled;
+        }
+        public void Disconnect(EventHub hub)
+        {
+            hub.KeyPressed -= this.OnKeyPressed;
+            hub.KeyReleassed -= this.OnKeyReleassed;
+            hub.MouseMoved -= this.OnMouseMoved;
+            hub.MousePressed -= this.OnMousePressed;
+            hub.MouseScrolled -= this.OnMouseScrolled;
+        }
+
         public virtual EventHandler WhenMouseScrolled { get; set; }
         public virtual EventHandler WhenMousePressed { get; set; }
         public virtual EventHandler WhenMouseMoved { get; set; }
@@ -47,6 +81,19 @@ namespace ProjectGates.Model
         {
             WhenKeyReleassed?.Invoke(sender, args);
             return;
+        }
+
+        public EventSink Sink { get { return this; } }
+    }
+
+    class EventNode : IEventNode
+    {
+        public EventHub Hub { get; }
+        public EventSink Sink { get; }
+
+        public EventNode()
+        {
+            Sink.Connect(Hub);
         }
     }
 }

@@ -32,38 +32,37 @@ namespace ProjectGates.Model.Vistas
         {
             AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
             AddEntity(new Background(textures.GetResource(TextureEnum.background), true, false));
-        }
 
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Closing;
-            else
+            Sink.WhenKeyPressed = ((sender, args) =>
             {
-                OnDraw += (() =>
+                var arguments = (KeyEventArgs)args;
+                if (arguments.Code == Keyboard.Key.Escape)
+                    Engine.Vista = Engine.SP_Closing;
+                else
                 {
-                    int n = 300;
-                    var view = Engine.MainWindow.GetView();
-                    view.Zoom(0.998f);
-                    Engine.MainWindow.SetView(view);
-                    count++;
-                    foreach (var entity in Entities)
+                    Sink.WhenKeyPressed = null;
+                    OnDraw += (() =>
                     {
-                        if (entity is ITransparent e)
-                            e.Transparency -= (PGPercent)0.005;
-                    }
-                    if (count >= n)
-                    {
-                        count = 0;
-                        OnDraw = DefaultOnDraw;
-                        Engine.SetVista(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
-                        Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
-                    }
-                });
-            }
-            #endregion
+                        int n = 300;
+                        var view = Engine.MainWindow.GetView();
+                        view.Zoom(0.998f);
+                        Engine.MainWindow.SetView(view);
+                        count++;
+                        foreach (var entity in Entities)
+                        {
+                            if (entity is ITransparent e)
+                                e.Transparency -= (PGPercent)0.005;
+                        }
+                        if (count >= n)
+                        {
+                            count = 0;
+                            OnDraw = DefaultOnDraw;
+                            Engine.SetVista(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
+                            Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
+                        }
+                    });
+                }
+            });
         }
     }
 }

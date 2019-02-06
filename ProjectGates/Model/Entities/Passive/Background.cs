@@ -27,8 +27,8 @@ namespace ProjectGates.Model.Entities.Passive
             {
                 if (value != fillWidth)
                 {
-                    float tmpX = (float)Engine.MainWindow.Size.X / (float)Sprite.TextureRect.Width;
-                    float tmpY = (float)Engine.MainWindow.Size.Y / (float)Sprite.TextureRect.Height;
+                    PGPercent tmpX = (float)Engine.MainWindow.Size.X / (float)Sprite.TextureRect.Width;
+                    PGPercent tmpY = (float)Engine.MainWindow.Size.Y / (float)Sprite.TextureRect.Height;
 
                     if (value == true)
                     {
@@ -72,12 +72,12 @@ namespace ProjectGates.Model.Entities.Passive
         {
             get
             {
-                return (PGPercent)((PGFloat)Sprite.Color.A/255);
+                return (PGFloat)Sprite.Color.A/255;
             }
             set
             {
                 var old = Sprite.Color;
-                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
+                var newColor = new Color(old.R, old.G, old.B, (byte)(value * 255));
                 Sprite.Color = newColor;
             }
         }

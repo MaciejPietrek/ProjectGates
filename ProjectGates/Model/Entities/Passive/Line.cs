@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectGates.G
+namespace ProjectGates.Model.Entities.Passive
 {
     class Line : Drawable
     {
@@ -79,14 +79,14 @@ namespace ProjectGates.G
 
         public void MoveX(float value)
         {
-            vertices[0].Position.X = value;
-            vertices[1].Position.X = value;
+            vertices[0].Position.X += value;
+            vertices[1].Position.X += value;
         }
 
         public void MoveY(float value)
         {
-            vertices[0].Position.Y = value;
-            vertices[1].Position.Y = value;
+            vertices[0].Position.Y += value;
+            vertices[1].Position.Y += value;
         }
     }
 }

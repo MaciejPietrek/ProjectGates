@@ -15,12 +15,12 @@ namespace ProjectGates.Model.Entities.Passive
         {
             get
             {
-                return (PGPercent)((PGFloat)Sprite.Color.A / 255);
+                return ((PGFloat)Sprite.Color.A / 255);
             }
             set
             {
                 var old = Sprite.Color;
-                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
+                var newColor = new Color(old.R, old.G, old.B, (byte)(value * 255));
                 Sprite.Color = newColor;
             }
         }

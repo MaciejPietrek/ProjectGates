@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using ProjectGates.Model.Entities;
+using SFML.Graphics;
 using SFML.System;
 
 using System;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectGates.G
+namespace ProjectGates.Model.Entities.Passive
 {
-    class Grid : Drawable
+    class Grid : PassiveEntity, Drawable
     {
         protected uint gridWidth;
         protected uint gridHeight;
@@ -29,7 +30,7 @@ namespace ProjectGates.G
             verticalLine.Color = gridColor;
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public override void Draw(RenderTarget target, RenderStates states)
         {
             float Xreminder = (target.Size.X % gridWidth) / 2;
             float Yreminder = (target.Size.Y % gridHeight) / 2;
@@ -37,8 +38,8 @@ namespace ProjectGates.G
             horizontalLine.Start = new Vector2f(-Xreminder, -Yreminder);
             verticalLine.Start = new Vector2f(-Xreminder, -Yreminder);
 
-            horizontalLine.End = new Vector2f(-Xreminder, target.Size.X);
-            verticalLine.End = new Vector2f(target.Size.Y, -Yreminder);
+            horizontalLine.End = new Vector2f(target.Size.X + Xreminder, -Yreminder);
+            verticalLine.End = new Vector2f(-Xreminder, target.Size.Y + Yreminder);
 
             while(horizontalLine.Start.Y <= target.Size.Y)
             { 

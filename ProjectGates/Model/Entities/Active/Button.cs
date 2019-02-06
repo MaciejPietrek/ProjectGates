@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Entities.Active
 {
-    class Button : ActiveEntity, IColor, IField
+    class Button : ActiveEntity, IColor, IField, IEventSink
     {
         private Text Text { get; set; }
         private RectangleShape Shape { get; set; }
@@ -35,11 +35,10 @@ namespace ProjectGates.Model.Entities.Active
             }
         }
 
+        public EventSink Sink { get; }
 
-        public Button(string text, float fontSize, float positionX, float positionY)
+        public Button(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY)
         {
-            ExceptionChecker.CheckPerceventagergumentException(fontSize, positionX, positionY);
-
             var tmp = Engine.MainWindow.Size;
             
             Text = new Text();
@@ -54,7 +53,7 @@ namespace ProjectGates.Model.Entities.Active
             Shape = (RectangleShape)bounds;
             Shape.FillColor = Color.Transparent;
 
-            WhenMouseMoved = ((sender, args) =>
+            Sink.WhenMouseMoved = ((sender, args) =>
             {
                 var rectangle = Field;
                 var argument = (MouseMoveEventArgs)args;

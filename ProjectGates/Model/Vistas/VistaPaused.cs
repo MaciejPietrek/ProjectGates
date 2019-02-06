@@ -30,17 +30,16 @@ namespace ProjectGates.Model.Vistas
                     Engine.Vista = new VistaRunning();
                 }
             });
-        }
 
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Space)
-                Engine.Vista = Engine.SP_Running;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Menu;
-            #endregion
+
+            Sink.WhenKeyPressed = ((sender, args) =>
+            {
+                var arguments = (KeyEventArgs)args;
+                if (arguments.Code == Keyboard.Key.Space)
+                    Engine.Vista = Engine.SP_Running;
+                if (arguments.Code == Keyboard.Key.Escape)
+                    Engine.Vista = Engine.SP_Menu;
+            });
         }
     }
 }
