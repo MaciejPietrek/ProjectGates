@@ -33,18 +33,18 @@ namespace ProjectGates.Model
                 if (vista != null)
                 {
                     Console.WriteLine(vista.ToString() + " -> " + value.ToString());
-                    MainWindow.MouseWheelMoved -= vista.Sink.OnMouseScrolled;
-                    MainWindow.MouseMoved -= vista.Sink.OnMouseMoved;
-                    MainWindow.MouseButtonPressed -= vista.Sink.OnMousePressed;
-                    MainWindow.KeyPressed -= vista.Sink.OnKeyPressed;
-                    MainWindow.KeyReleased -= vista.Sink.OnKeyReleassed;
+                    MainWindow.MouseWheelMoved -= vista.OnMouseScrolled;
+                    MainWindow.MouseMoved -= vista.OnMouseMoved;
+                    MainWindow.MouseButtonPressed -= vista.OnMousePressed;
+                    MainWindow.KeyPressed -= vista.OnKeyPressed;
+                    MainWindow.KeyReleased -= vista.OnKeyReleassed;
                 }
                 vista = value;
-                MainWindow.MouseWheelMoved += vista.Sink.OnMouseScrolled;
-                MainWindow.MouseMoved += vista.Sink.OnMouseMoved;
-                MainWindow.MouseButtonPressed += vista.Sink.OnMousePressed;
-                MainWindow.KeyPressed += vista.Sink.OnKeyPressed;
-                MainWindow.KeyReleased += vista.Sink.OnKeyReleassed;
+                MainWindow.MouseWheelMoved += vista.OnMouseScrolled;
+                MainWindow.MouseMoved += vista.OnMouseMoved;
+                MainWindow.MouseButtonPressed += vista.OnMousePressed;
+                MainWindow.KeyPressed += vista.OnKeyPressed;
+                MainWindow.KeyReleased += vista.OnKeyReleassed;
             }
         }
         public static void SetVista(Vista vista, Action action)
@@ -78,8 +78,6 @@ namespace ProjectGates.Model
             SP_Closing      = new VistaClosing();
 
             Vista = SP_Started;
-
-            MainWindow.Closed += ((sender, args) => MainWindow.Close());
         }
         private Engine()
         {
