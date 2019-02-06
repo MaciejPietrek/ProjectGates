@@ -42,7 +42,7 @@ namespace ProjectGates.Model.Vistas
                 Engine.Vista = Engine.SP_Closing;
             else
             {
-                OnDraw += ((target, state) =>
+                OnDraw += (() =>
                 {
                     int n = 300;
                     var view = Engine.MainWindow.GetView();
@@ -52,13 +52,13 @@ namespace ProjectGates.Model.Vistas
                     foreach (var entity in Entities)
                     {
                         if (entity is ITransparent e)
-                            e.Transparency = (PGPercent)((float)e.Transparency - (float)1 / 200);
+                            e.Transparency -= (PGPercent)0.005;
                     }
                     if (count >= n)
                     {
                         count = 0;
                         OnDraw = DefaultOnDraw;
-                        Engine.SetVistaBefore(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
+                        Engine.SetVista(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
                         Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
                     }
                 });

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Vistas
 {
-    abstract class Vista : EventSink, IEventHub, Drawable
+    abstract class Vista : EventSink, IEventHub
     {
         private Dictionary<string, IEntity> EntityDictionary { get; set; }
         private HashSet<IEntity> EntitySet { get; set; }
@@ -61,23 +61,88 @@ namespace ProjectGates.Model.Vistas
             }
         }
 
-        public readonly Action<RenderTarget, RenderStates> DefaultOnDraw;
+        public readonly Action DefaultOnDraw;
         public readonly Action<Time> DefaultOnUpdate;
 
-        public Action<RenderTarget, RenderStates> OnDraw { get; set; }
+        /* OnStart & OnExit deprecated
+        private int Count = 100;
+
+        public Action OnStart
+        {
+            get
+            {
+                return () =>
+                {
+                    if (Count == 200)
+                    {
+                        foreach (var entity in Entities)
+                        {
+                            if (entity is ITransparent e)
+                            {
+                                e.Transparency = (PGPercent)0;
+                            }
+                        }
+                    }
+                    foreach (var entity in Entities)
+                    {
+                        if (entity is ITransparent e)
+                        {
+                            e.Transparency += (PGPercent)0.005;
+                        }
+                    }
+                    Count--;
+                    if (Count <= 0)
+                    {
+                        Count = 200;
+                        OnDraw = DefaultOnDraw;
+                    }
+                };
+            }
+        }
+        public Action OnExit
+        {
+            get
+            {
+                return () =>
+                {
+                    foreach (var entity in Entities)
+                    {
+                        if (entity is ITransparent e)
+                        {
+                            e.Transparency -= (PGPercent)0.01;
+                        }
+                    }
+                    Count--;
+                    if (Count <= 0)
+                    {
+                        foreach(var entity in Entities)
+                        {
+                            if (entity is ITransparent e)
+                            {
+                                e.Transparency = (PGPercent)1;
+                            }
+                        }
+                        Count = 100;
+                        OnDraw = DefaultOnDraw;
+                    }
+                };
+            }
+        }
+        */
+
+        public Action OnDraw { get; set; }
         public Action<Time> OnUpdate { get; set; }
+        
 
         protected Vista()
         {
             EntityDictionary = new Dictionary<string, IEntity>();
             EntitySet = new HashSet<IEntity>();
 
-            DefaultOnDraw = ((target, states) =>
+            DefaultOnDraw = (() =>
             {
-                foreach (var entity in EntityDictionary)
-                    target.Draw(entity.Value);
-                foreach (var entity in EntitySet)
-                    target.Draw(entity);
+                foreach (var entity in Entities)
+                    Engine.MainWindow.Draw(entity);
             });
             DefaultOnUpdate = ((time) =>
             {
@@ -88,11 +153,10 @@ namespace ProjectGates.Model.Vistas
             OnUpdate = DefaultOnUpdate;
         }
 
-        public virtual void Draw(RenderTarget target, RenderStates states)
+        public virtual void Draw()
         {
-            OnDraw(target, states);
+            OnDraw();
         }
-
         public virtual void Update(Time time)
         {
             OnUpdate(time);

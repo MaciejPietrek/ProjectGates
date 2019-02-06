@@ -14,12 +14,12 @@ namespace ProjectGates.Model.Vistas
 {
     class VistaMenu : Vista
     {
-        public Action<RenderTarget, RenderStates> OnLoad;
+        public Action OnLoad;
         private int count = 0;
 
         public VistaMenu()
         {
-            OnLoad = ((state, target) =>
+            OnLoad = (() =>
             {
                 if(count == 0)
                 {
@@ -32,7 +32,7 @@ namespace ProjectGates.Model.Vistas
                 foreach (var entity in Entities)
                 {
                     if (entity is ITransparent e)
-                        e.Transparency = (PGPercent)((float)e.Transparency + 0.02);
+                        e.Transparency += (PGPercent)0.02;
                 }
                 count++;
                 if(count >= 100)
@@ -41,7 +41,6 @@ namespace ProjectGates.Model.Vistas
                     OnDraw = DefaultOnDraw;
                 }
             });
-
             OnDraw += OnLoad;
 
             var button1 = new Button("Continue", 0.05f, 0.3f, 0.1f);
@@ -93,7 +92,6 @@ namespace ProjectGates.Model.Vistas
                 }
             });
         }
-
 
         public override void OnKeyPressed(object sender, EventArgs args)
         {

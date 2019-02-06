@@ -15,6 +15,7 @@ namespace ProjectGates.Model.Entities
         {
             Value = value;
         }
+
         public static implicit operator PGFloat(float value)
         {
             return new PGFloat(value);
@@ -47,10 +48,20 @@ namespace ProjectGates.Model.Entities
         {
             this.value = value;
         }
+
+        public static implicit operator float(PGPercent value)
+        {
+            return value.Value;
+        }
+        public static implicit operator PGFloat(PGPercent value)
+        {
+            return value.value;
+        }
+
         public static explicit operator PGPercent(PGFloat value)
         {
             if (value > 1) return new PGPercent(0);
-            if (value < 0) return new PGPercent(1); 
+            if (value < 0) return new PGPercent(1);
             return new PGPercent(value);
         }
         public static explicit operator PGPercent(float value)
@@ -58,14 +69,6 @@ namespace ProjectGates.Model.Entities
             if (value > 1) return new PGPercent(1);
             if (value < 0) return new PGPercent(0);
             return new PGPercent(value);
-        }
-        public static explicit operator float(PGPercent value)
-        {
-            return value.Value;
-        }
-        public static explicit operator PGFloat(PGPercent value)
-        {
-            return value.value;
         }
     }
     struct PGPoint
@@ -221,7 +224,7 @@ namespace ProjectGates.Model.Entities
             result.Position = (Vector2f)field.Position;
             return result;
         }
-
+        
         public bool Contains(PGPoint point)
         {
             if (point.X > Position.X + Size.X)

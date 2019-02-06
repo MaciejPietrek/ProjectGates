@@ -20,8 +20,8 @@ namespace ProjectGates.Model.Vistas
             var button2 = new Button("No, I want to return :)", 0.05f, 0.0f, 0.15f);
             var button3 = new Button("Hell yeah!", 0.05f, 0.0f, 0.20f);
             AddEntity(new Title("It has been good to have You here :)"), "Title");
-            AddEntity(button1, "b1").AsEventSink().WhenMouseMoved = null;
-            AddEntity(button2, "b2").AsEventSink().WhenMousePressed = ((sender, args) =>
+            AddEntity(button1).AsEventSink().WhenMouseMoved = null;
+            AddEntity(button2).AsEventSink().WhenMousePressed = ((sender, args) =>
             {
                 var rectangle = button2.Field;
                 var argument = (MouseButtonEventArgs)args;

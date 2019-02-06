@@ -16,17 +16,11 @@ namespace ProjectGates.Model
         }
         public static ActiveEntity AsActive(this IEntity entity)
         {
-            if (entity is ActiveEntity)
-                return (ActiveEntity)entity;
-            else
-                return null;
+            return entity as ActiveEntity;
         }
         public static EventSink AsEventSink(this IEntity entity)
         {
-            if (entity is EventSink)
-                return (EventSink)entity;
-            else
-                return null;
+            return entity as EventSink;
         }
         public static Vector2f Multiply(Vector2f first, Vector2f second)
         {

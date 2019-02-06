@@ -33,19 +33,21 @@ namespace ProjectGates.Model
                 if (vista != null)
                 {
                     Console.WriteLine(vista.ToString() + " -> " + value.ToString());
+                    MainWindow.MouseWheelMoved -= vista.OnMouseScrolled;
                     MainWindow.MouseMoved -= vista.OnMouseMoved;
                     MainWindow.MouseButtonPressed -= vista.OnMousePressed;
                     MainWindow.KeyPressed -= vista.OnKeyPressed;
                     MainWindow.KeyReleased -= vista.OnKeyReleassed;
                 }
                 vista = value;
+                MainWindow.MouseWheelMoved += vista.OnMouseScrolled;
                 MainWindow.MouseMoved += vista.OnMouseMoved;
                 MainWindow.MouseButtonPressed += vista.OnMousePressed;
                 MainWindow.KeyPressed += vista.OnKeyPressed;
                 MainWindow.KeyReleased += vista.OnKeyReleassed;
             }
         }
-        public static void SetVistaBefore(Vista vista, Action<RenderTarget, RenderStates> action)
+        public static void SetVista(Vista vista, Action action)
         {
             Vista = vista;
             Vista.OnDraw = action;
@@ -81,7 +83,6 @@ namespace ProjectGates.Model
 
             Vista = SP_Started;
         }
-
         private Engine()
         {
 
@@ -105,57 +106,36 @@ namespace ProjectGates.Model
                 Render();
             }
         }
-        private void Run(Func<bool> EndCondition, Action<Time> Update)
-        {
-            Clock clock = new Clock();
-            Time timeSinceLastUpdate = Time.Zero;
-            while (EndCondition())
-            {
-                timeSinceLastUpdate += clock.Restart();
-                while (timeSinceLastUpdate > timePerFrame)
-                {
-                    timeSinceLastUpdate -= timePerFrame;
-                    this.Update(timePerFrame);
-                    Update?.Invoke(timePerFrame);
-                    ProcessEvents();
-                }
-                Render();
-            }
-        }
 
         #region Event handlers
         static private void OnMouseClick(object sender, EventArgs args)
         {
             return;
         }
-
         static private void OnKeyPressed(object sender, EventArgs args)
         {
             return;
         }
-
         static private void OnKeyReleassed(object sender, EventArgs args)
         {
             return;
         }
         #endregion
 
-        #region ProcessEvents(), Render() & Update(Time elapsedTime)
+        #region ProcessEvents(), Render() & Update(Time time)
         private void ProcessEvents()
         {
             MainWindow.DispatchEvents();
         }
-
         private void Render()
         {
             MainWindow.Clear(Color.Black);
-            MainWindow.Draw(Vista);
+            Vista.Draw();
             MainWindow.Display();
         }
-
-        private void Update(Time elapsedTime)
+        private void Update(Time time)
         {
-            Vista.Update(elapsedTime);
+            Vista.Update(time);
         }
         #endregion
     }
