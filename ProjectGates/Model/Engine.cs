@@ -13,12 +13,12 @@ namespace ProjectGates.Model
 {
     class Engine
     {
-        #region private fields.
+        #region private fields
         private static Time timePerFrame;
         private static Vista vista;
         #endregion
 
-        #region Static fields.
+        #region Static fields
         //Do not change those!
         public static Engine Instance { get; }
         public static RenderWindow MainWindow { get; }
@@ -62,7 +62,7 @@ namespace ProjectGates.Model
         public static VistaClosing      SP_Closing      { get; }
         #endregion
 
-        #region Contructors.
+        #region Contructors
         static Engine()
         {
             // Private static field initilizations.
@@ -70,11 +70,7 @@ namespace ProjectGates.Model
             // Private public field initializations.
             Instance        = new Engine();
             MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates", Styles.Fullscreen);
-
-            MainWindow.MouseButtonPressed += OnMouseClick;
-            MainWindow.KeyPressed += OnKeyPressed;
-            MainWindow.KeyReleased += OnKeyReleassed;
-
+            
             SP_Started      = new VistaStarted();
             SP_Menu         = new VistaMenu();
             SP_Running      = new VistaRunning();
@@ -85,7 +81,7 @@ namespace ProjectGates.Model
         }
         private Engine()
         {
-
+            return;
         }
         #endregion
 
@@ -99,44 +95,18 @@ namespace ProjectGates.Model
                 while (timeSinceLastUpdate > timePerFrame)
                 {
                     timeSinceLastUpdate -= timePerFrame;
-                    Update(timePerFrame);
                     Vista.Update(timePerFrame);
-                    ProcessEvents();
+                    MainWindow.DispatchEvents();
                 }
                 Render();
             }
         }
 
-        #region Event handlers
-        static private void OnMouseClick(object sender, EventArgs args)
-        {
-            return;
-        }
-        static private void OnKeyPressed(object sender, EventArgs args)
-        {
-            return;
-        }
-        static private void OnKeyReleassed(object sender, EventArgs args)
-        {
-            return;
-        }
-        #endregion
-
-        #region ProcessEvents(), Render() & Update(Time time)
-        private void ProcessEvents()
-        {
-            MainWindow.DispatchEvents();
-        }
         private void Render()
         {
             MainWindow.Clear(Color.Black);
             Vista.Draw();
             MainWindow.Display();
         }
-        private void Update(Time time)
-        {
-            Vista.Update(time);
-        }
-        #endregion
     }
 }

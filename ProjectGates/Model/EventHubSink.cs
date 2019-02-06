@@ -17,11 +17,11 @@ namespace ProjectGates.Model
 
     abstract class EventSink
     {
-        public virtual Action<object, EventArgs> WhenMouseScrolled { get; set; }
-        public virtual Action<object, EventArgs> WhenMousePressed { get; set; }
-        public virtual Action<object, EventArgs> WhenMouseMoved { get; set; }
-        public virtual Action<object, EventArgs> WhenKeyPressed { get; set; }
-        public virtual Action<object, EventArgs> WhenKeyReleassed { get; set; }
+        public virtual EventHandler WhenMouseScrolled { get; set; }
+        public virtual EventHandler WhenMousePressed { get; set; }
+        public virtual EventHandler WhenMouseMoved { get; set; }
+        public virtual EventHandler WhenKeyPressed { get; set; }
+        public virtual EventHandler WhenKeyReleassed { get; set; }
 
         public virtual void OnMouseScrolled(object sender, EventArgs args)
         {

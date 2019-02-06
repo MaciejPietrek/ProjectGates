@@ -132,7 +132,6 @@ namespace ProjectGates.Model.Vistas
 
         public Action OnDraw { get; set; }
         public Action<Time> OnUpdate { get; set; }
-        
 
         protected Vista()
         {
@@ -161,7 +160,6 @@ namespace ProjectGates.Model.Vistas
         {
             OnUpdate(time);
         }
-
 
         #region Event handlers
         public override void OnMouseScrolled(object sender, EventArgs args)
