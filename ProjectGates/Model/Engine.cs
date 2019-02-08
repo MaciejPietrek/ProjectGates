@@ -33,31 +33,65 @@ namespace ProjectGates.Model
                 if (vista != null)
                 {
                     Console.WriteLine(vista.ToString() + " -> " + value.ToString());
-                    MainWindow.MouseMoved -= vista.OnMouseMoved;
-                    MainWindow.MouseButtonPressed -= vista.OnMousePressed;
-                    MainWindow.KeyPressed -= vista.OnKeyPressed;
-                    MainWindow.KeyReleased -= vista.OnKeyReleassed;
+                    KeyPressed -= Vista.WhenKeyPressed;
+                    KeyReleassed -= Vista.WhenKeyReleassed;
+                    MouseButtonPressed -= Vista.WhenMouseButtonPressed;
+                    MouseButtonReleassed -= Vista.WhenMouseButtonReleassed;
+                    MouseMoved -= Vista.WhenMouseMoved;
+                    MouseWheelMoved -= Vista.WhenMouseWeelMoved;
                 }
                 vista = value;
-                MainWindow.MouseMoved += vista.OnMouseMoved;
-                MainWindow.MouseButtonPressed += vista.OnMousePressed;
-                MainWindow.KeyPressed += vista.OnKeyPressed;
-                MainWindow.KeyReleased += vista.OnKeyReleassed;
+                KeyPressed += Vista.WhenKeyPressed;
+                KeyReleassed += Vista.WhenKeyReleassed;
+                MouseButtonPressed += Vista.WhenMouseButtonPressed;
+                MouseButtonReleassed += Vista.WhenMouseButtonReleassed;
+                MouseMoved += Vista.WhenMouseMoved;
+                MouseWheelMoved += Vista.WhenMouseWeelMoved;
             }
         }
-        public static void SetVistaBefore(Vista vista, Action<RenderTarget, RenderStates> action)
+        public static void SetVista(Vista vista, Action<RenderTarget, RenderStates> action)
         {
             Vista = vista;
             Vista.OnDraw = action;
             Vista.OnDraw += Vista.DefaultOnDraw;
         }
-        
-        //Here add ALL possible contant vistas!
-        public static VistaStarted      SP_Started      { get; }
-        public static VistaMenu         SP_Menu         { get; }
-        public static VistaRunning      SP_Running      { get; }
-        public static VistaPaused       SP_PausedMenu   { get; }
-        public static VistaClosing      SP_Closing      { get; }
+
+        public static VistaStarted PG_VistaStarted;
+        public static VistaMenu PG_VistaMenu;
+        #endregion
+
+        #region Events.
+        private static event EventHandler KeyPressed;
+        private static event EventHandler KeyReleassed;
+        private static event EventHandler MouseButtonPressed;
+        private static event EventHandler MouseButtonReleassed;
+        private static event EventHandler MouseMoved;
+        private static event EventHandler MouseWheelMoved;
+
+        private static void OnKeyPressed(object sender, EventArgs args)
+        {
+            KeyPressed?.Invoke(sender, args);
+        }
+        private static void OnKeyReleassed(object sender, EventArgs args)
+        {
+            KeyReleassed?.Invoke(sender, args);
+        }
+        private static void OnMouseButtonPressed(object sender, EventArgs args)
+        {
+            MouseButtonPressed?.Invoke(sender, args);
+        }
+        private static void OnMouseButtonReleassed(object sender, EventArgs args)
+        {
+            MouseButtonReleassed?.Invoke(sender, args);
+        }
+        private static void OnMouseMoved(object sender, EventArgs args)
+        {
+            MouseMoved?.Invoke(sender, args);
+        }
+        private static void OnMouseWheelMoved(object sender, EventArgs args)
+        {
+            MouseWheelMoved?.Invoke(sender, args);
+        }
         #endregion
 
         #region Contructors.
@@ -67,19 +101,24 @@ namespace ProjectGates.Model
             timePerFrame    = Time.FromSeconds(1.0f / 30.0f);
             // Private public field initializations.
             Instance        = new Engine();
-            MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates", Styles.Fullscreen);
+            MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates");
 
-            MainWindow.MouseButtonPressed += OnMouseClick;
             MainWindow.KeyPressed += OnKeyPressed;
             MainWindow.KeyReleased += OnKeyReleassed;
+            MainWindow.MouseButtonPressed += OnMouseButtonPressed;
+            MainWindow.MouseButtonReleased += OnMouseButtonReleassed;
+            MainWindow.MouseMoved += OnMouseMoved;
+            MainWindow.MouseWheelMoved += OnMouseWheelMoved;
 
-            SP_Started      = new VistaStarted();
-            SP_Menu         = new VistaMenu();
-            SP_Running      = new VistaRunning();
-            SP_PausedMenu   = new VistaPaused();
-            SP_Closing      = new VistaClosing();
+            PG_VistaStarted = new VistaStarted();
+            PG_VistaMenu = new VistaMenu();
 
-            Vista = SP_Started;
+            Vista = PG_VistaStarted;
+
+            MainWindow.Closed += ((sender, args) =>
+            {
+                MainWindow.Close();
+            });
         }
 
         private Engine()
@@ -88,6 +127,7 @@ namespace ProjectGates.Model
         }
         #endregion
 
+        #region Run() & Render().
         public void Run()
         {
             Clock clock = new Clock();
@@ -98,52 +138,11 @@ namespace ProjectGates.Model
                 while (timeSinceLastUpdate > timePerFrame)
                 {
                     timeSinceLastUpdate -= timePerFrame;
-                    Update(timePerFrame);
                     Vista.Update(timePerFrame);
-                    ProcessEvents();
+                    MainWindow.DispatchEvents();
                 }
                 Render();
             }
-        }
-        private void Run(Func<bool> EndCondition, Action<Time> Update)
-        {
-            Clock clock = new Clock();
-            Time timeSinceLastUpdate = Time.Zero;
-            while (EndCondition())
-            {
-                timeSinceLastUpdate += clock.Restart();
-                while (timeSinceLastUpdate > timePerFrame)
-                {
-                    timeSinceLastUpdate -= timePerFrame;
-                    this.Update(timePerFrame);
-                    Update?.Invoke(timePerFrame);
-                    ProcessEvents();
-                }
-                Render();
-            }
-        }
-
-        #region Event handlers
-        static private void OnMouseClick(object sender, EventArgs args)
-        {
-            return;
-        }
-
-        static private void OnKeyPressed(object sender, EventArgs args)
-        {
-            return;
-        }
-
-        static private void OnKeyReleassed(object sender, EventArgs args)
-        {
-            return;
-        }
-        #endregion
-
-        #region ProcessEvents(), Render() & Update(Time elapsedTime)
-        private void ProcessEvents()
-        {
-            MainWindow.DispatchEvents();
         }
 
         private void Render()
@@ -151,11 +150,6 @@ namespace ProjectGates.Model
             MainWindow.Clear(Color.Black);
             MainWindow.Draw(Vista);
             MainWindow.Display();
-        }
-
-        private void Update(Time elapsedTime)
-        {
-            Vista.Update(elapsedTime);
         }
         #endregion
     }

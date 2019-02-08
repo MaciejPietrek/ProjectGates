@@ -1,6 +1,4 @@
 ﻿using ProjectGates.Model.Entities;
-using ProjectGates.Model.Entities.Active;
-using ProjectGates.Model.Entities.Passive;
 using ProjectGates.Model.Resources;
 using SFML.Graphics;
 using SFML.Window;
@@ -21,88 +19,64 @@ namespace ProjectGates.Model.Vistas
         {
             OnLoad = ((state, target) =>
             {
-                if(count == 0)
+                if (count == 0)
                 {
                     foreach (var entity in Entities)
                     {
                         if (entity is ITransparent e)
-                            e.Transparency = (PGPercent)0;
+                            e.Transparency = 0;
                     }
                 }
                 foreach (var entity in Entities)
                 {
                     if (entity is ITransparent e)
-                        e.Transparency = (PGPercent)((float)e.Transparency + 0.02);
+                        e.Transparency = e.Transparency + 0.02f;
                 }
                 count++;
-                if(count >= 100)
+                if (count >= 100)
                 {
                     count = 0;
                     OnDraw = DefaultOnDraw;
                 }
             });
 
-            OnDraw += OnLoad;
+            OnDraw = OnLoad;
+            OnDraw += DefaultOnDraw;
+
+            AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
 
             var button1 = new Button("Continue", 0.05f, 0.3f, 0.1f);
             var button2 = new Button("New", 0.05f, 0.3f, 0.15f);
             var button3 = new Button("Load", 0.05f, 0.3f, 0.2f);
             var button4 = new Button("Settings", 0.05f, 0.3f, 0.25f);
-            var bg      = new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background));
-            var title   = new Title("Main Menu");
-            var logo    = new Logo(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Logo));
-            var field   = new CenteredField(0.4f, 0.8f);
-            AddEntity(bg);
-            AddEntity(title);
-            AddEntity(logo);
-            AddEntity(field); 
-            AddEntity(button1).AsEventSink().WhenMousePressed = ((sender, args) =>
-            {
-                var rectangle = button1.Field;
-                var argument = (MouseButtonEventArgs)args;
-                if (rectangle.Contains(argument.X, argument.Y))
-                {
-                    Engine.Vista = Engine.SP_Running;
-                }
-            });
-            AddEntity(button2).AsEventSink().WhenMousePressed = ((sender, args) =>
-            {
-                var rectangle = button2.Field;
-                var argument = (MouseButtonEventArgs)args;
-                if (rectangle.Contains(argument.X, argument.Y))
-                {
-                    Engine.Vista = new VistaNotImplemented();
-                }
-            });
-            AddEntity(button3).AsEventSink().WhenMousePressed = ((sender, args) =>
-            {
-                var rectangle = button3.Field;
-                var argument = (MouseButtonEventArgs)args;
-                if (rectangle.Contains(argument.X, argument.Y))
-                {
-                    Engine.Vista = new VistaMenuLoad();
-                }
-            });
-            AddEntity(button4).AsEventSink().WhenMousePressed = ((sender, args) =>
-            {
-                var rectangle = button4.Field;
-                var argument = (MouseButtonEventArgs)args;
-                if (rectangle.Contains(argument.X, argument.Y))
-                {
-                    Engine.Vista = new VistaMenuSettings();
-                }
-            });
+            var button5 = new ButtonExit("Exit", 0.05f, 0.3f, 0.30f);
+            AddEntity(button1);
+            AddEntity(button2);
+            AddEntity(button3);
+            AddEntity(button4);
+            AddEntity(button5);
+
         }
-
-
-        public override void OnKeyPressed(object sender, EventArgs args)
+        
+        private class ButtonExit : Button
         {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Closing;
-            #endregion
-            base.OnKeyPressed(sender, args);
+            public ButtonExit(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY) : base(text, fontSize, positionX, positionY)
+            {
+            }
+
+            public override void Connect(Vista vista)
+            {
+                base.Connect(vista);
+
+                vista.WhenMouseButtonPressed = ((sender, args) =>
+                {
+                    var ar = args as MouseButtonEventArgs;
+                    if (Field.Contains(new PGPoint(ar.X, ar.Y)))
+                    {
+                        Engine.MainWindow.Close();
+                    }
+                });
+            }
         }
     }
 }

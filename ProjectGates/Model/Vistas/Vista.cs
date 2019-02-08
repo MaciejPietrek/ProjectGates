@@ -11,35 +11,26 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Vistas
 {
-    abstract class Vista : EventSink, IEventHub, Drawable
+    abstract class Vista : Drawable
     {
+        #region Entities.
         private Dictionary<string, IEntity> EntityDictionary { get; set; }
         private HashSet<IEntity> EntitySet { get; set; }
 
         protected IEntity AddEntity(IEntity entity, string ID)
         {
-            if (entity is EventSink)
+            if (entity is IEventConsumer consumer)
             {
-                var sink = entity.AsEventSink();
-                MouseScrolled += sink.OnMouseScrolled;
-                MousePressed += sink.OnMousePressed;
-                MouseMoved += sink.OnMouseMoved;
-                KeyPressed += sink.OnKeyPressed;
-                KeyReleassed += sink.OnKeyReleassed;
+                consumer.Connect(this);
             }
             EntityDictionary.Add(ID, entity);
             return entity;
         }
         protected IEntity AddEntity(IEntity entity)
         {
-            if (entity is EventSink)
+            if (entity is IEventConsumer consumer)
             {
-                var sink = entity.AsEventSink();
-                MouseScrolled += sink.OnMouseScrolled;
-                MousePressed += sink.OnMousePressed;
-                MouseMoved += sink.OnMouseMoved;
-                KeyPressed += sink.OnKeyPressed;
-                KeyReleassed += sink.OnKeyReleassed;
+                consumer.Connect(this);
             }
             EntitySet.Add(entity);
             return entity;
@@ -60,23 +51,25 @@ namespace ProjectGates.Model.Vistas
                 return reesult;
             }
         }
+        #endregion
 
+        #region OnDraw & OnUpdate Actions.
         public readonly Action<RenderTarget, RenderStates> DefaultOnDraw;
         public readonly Action<Time> DefaultOnUpdate;
 
         public Action<RenderTarget, RenderStates> OnDraw { get; set; }
         public Action<Time> OnUpdate { get; set; }
-
+        #endregion
+        
+        #region Constructor.
         protected Vista()
         {
             EntityDictionary = new Dictionary<string, IEntity>();
             EntitySet = new HashSet<IEntity>();
-
+            
             DefaultOnDraw = ((target, states) =>
             {
-                foreach (var entity in EntityDictionary)
-                    target.Draw(entity.Value);
-                foreach (var entity in EntitySet)
+                foreach (var entity in Entities)
                     target.Draw(entity);
             });
             DefaultOnUpdate = ((time) =>
@@ -87,51 +80,26 @@ namespace ProjectGates.Model.Vistas
             OnDraw = DefaultOnDraw;
             OnUpdate = DefaultOnUpdate;
         }
+        #endregion
 
+        #region Event handlers.
+        public EventHandler WhenKeyPressed = null;
+        public EventHandler WhenKeyReleassed = null;
+        public EventHandler WhenMouseButtonPressed = null;
+        public EventHandler WhenMouseButtonReleassed = null;
+        public EventHandler WhenMouseMoved = null;
+        public EventHandler WhenMouseWeelMoved = null;
+        #endregion
+
+        #region Draw & Update methods.
         public virtual void Draw(RenderTarget target, RenderStates states)
         {
             OnDraw(target, states);
         }
-
         public virtual void Update(Time time)
         {
             OnUpdate(time);
         }
-
-
-        #region Event handlers
-        public override void OnMouseScrolled(object sender, EventArgs args)
-        {
-            base.OnMouseScrolled(sender, args);
-            MouseScrolled?.Invoke(sender, args);
-        }
-        public override void OnMousePressed(object sender, EventArgs args)
-        {
-            base.OnMousePressed(sender, args);
-            MousePressed?.Invoke(sender, args);
-        }
-        public override void OnMouseMoved(object sender, EventArgs args)
-        {
-            base.OnMouseMoved(sender, args);
-            MouseMoved?.Invoke(sender, args);
-        }
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            base.OnMousePressed(sender, args);
-            KeyPressed?.Invoke(sender, args);
-        }
-        public override void OnKeyReleassed(object sender, EventArgs args)
-        {
-            base.OnKeyReleassed(sender, args);
-            KeyReleassed?.Invoke(sender, args);
-        }
         #endregion
-
-        public event EventHandler MouseScrolled;
-        public event EventHandler MousePressed;
-        public event EventHandler MouseMoved;
-        public event EventHandler KeyPressed;
-        public event EventHandler KeyReleassed;
-
     }
 }

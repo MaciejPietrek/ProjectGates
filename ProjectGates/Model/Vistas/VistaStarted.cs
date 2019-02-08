@@ -1,8 +1,6 @@
 ﻿using ProjectGates.Model.Entities;
-using ProjectGates.Model.Entities.Passive;
-using ProjectGates.Model.Resources;
+using SFML.Graphics;
 using SFML.Window;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +11,22 @@ namespace ProjectGates.Model.Vistas
 {
     class VistaStarted : Vista
     {
-        private static ResourceTextures textures;
-
+        private readonly Resources.ResourceTextures textures = new Resources.ResourceTextures();
+        private enum Key
+        {
+            Background
+        }
         private int count = 0;
-
-        static VistaStarted()
-        {
-            textures = new ResourceTextures();
-            textures.AddResource(TextureEnum.background, ".\\Model\\Resources\\Textures\\BACKGROUND.png");
-        }
-
-        enum TextureEnum
-        {
-            background
-        }
-
         public VistaStarted()
         {
-            AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
-            AddEntity(new Background(textures.GetResource(TextureEnum.background), true, false));
-        }
+            textures.AddResource(Key.Background, ".\\Model\\Resources\\Textures\\BACKGROUND.png");
+            AddEntity(new Background(Resources.ResourceTextures.GetGlobalResource(Resources.ResourceTextures.Key.Background)));
+            AddEntity(new Background(textures.GetResource(Key.Background), true, false));
 
-        public override void OnKeyPressed(object sender, EventArgs args)
-        {
-            #region State change
-            var arguments = (KeyEventArgs)args;
-            if (arguments.Code == Keyboard.Key.Escape)
-                Engine.Vista = Engine.SP_Closing;
-            else
+            WhenKeyPressed = ((sender, args) =>
             {
+                #region State change
+                var arguments = (KeyEventArgs)args;
                 OnDraw += ((target, state) =>
                 {
                     int n = 300;
@@ -58,12 +43,12 @@ namespace ProjectGates.Model.Vistas
                     {
                         count = 0;
                         OnDraw = DefaultOnDraw;
-                        Engine.SetVistaBefore(Engine.SP_Menu, Engine.SP_Menu.OnLoad);
+                        Engine.Vista = Engine.PG_VistaMenu;
                         Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
                     }
                 });
-            }
-            #endregion
+                #endregion
+            });
         }
     }
 }

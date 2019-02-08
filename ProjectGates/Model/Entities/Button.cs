@@ -1,4 +1,5 @@
 ﻿using ProjectGates.Model.Resources;
+using ProjectGates.Model.Vistas;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -8,14 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectGates.Model.Entities.Active
+namespace ProjectGates.Model.Entities
 {
-    class Button : ActiveEntity, IColor, IField
+    class Button : ActiveEntity, IColor, IField, ITransparent, IEventConsumer
     {
-        private Text Text { get; set; }
-        private RectangleShape Shape { get; set; }
 
 
+        protected Text Text { get; set; }
+        protected RectangleShape Shape { get; set; }
+        
         public PGField Field
         {
             get
@@ -35,30 +37,50 @@ namespace ProjectGates.Model.Entities.Active
             }
         }
 
-
-        public Button(string text, float fontSize, float positionX, float positionY)
+        public PGPercent Transparency
         {
-            ExceptionChecker.CheckPerceventagergumentException(fontSize, positionX, positionY);
+            get
+            {
+                return ((PGFloat)Text.Color.A / 255);
+            }
+            set
+            {
+                var old = Text.Color;
+                var newColor = new Color(old.R, old.G, old.B, (byte)(value * 255));
+                Text.Color = newColor;
+            }
+        }
 
+        public Button(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY)
+        {
             var tmp = Engine.MainWindow.Size;
-            
+
             Text = new Text();
             Text.DisplayedString = text;
             Text.Font = ResourceFonts.GetGlobalResource(ResourceFonts.Key.Main);
-            Text.Position = new Vector2f(tmp.X * positionX, tmp.Y * positionY);
-            Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * fontSize);
+            Text.Position = new Vector2f(tmp.X * (PGFloat)positionX, tmp.Y * (PGFloat)positionY);
+            Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * (PGFloat)fontSize);
             Text.Color = Color.White;
-            
+
 
             PGField bounds = Text.GetGlobalBounds();
             Shape = (RectangleShape)bounds;
             Shape.FillColor = Color.Transparent;
+        }
 
-            WhenMouseMoved = ((sender, args) =>
+
+        public override void Draw(RenderTarget target, RenderStates states)
+        {
+            target.Draw(Shape);
+            target.Draw(Text);
+        }
+
+        public virtual void Connect(Vista vista)
+        {
+            vista.WhenMouseMoved += ((sender, args) =>
             {
-                var rectangle = Field;
                 var argument = (MouseMoveEventArgs)args;
-                if (rectangle.Contains(new Vector2f(argument.X, argument.Y)))
+                if (Field.Contains(new Vector2f(argument.X, argument.Y)))
                 {
                     Color = new Color(200, 200, 200, 200);
                 }
@@ -68,13 +90,5 @@ namespace ProjectGates.Model.Entities.Active
                 }
             });
         }
-        
-
-        public override void Draw(RenderTarget target, RenderStates states)
-        {
-            target.Draw(Shape);
-            target.Draw(Text);
-        }
-
     }
 }

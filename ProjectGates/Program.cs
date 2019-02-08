@@ -13,15 +13,15 @@ namespace ProjectGates
 {
     class Program
     {
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll", EntryPoint = "FindWindow")]
-        private static extern int FindWindow(string sClassm, string sWindow);
+        static void on(object sender, EventArgs args)
+        {
 
+        }
         static void Main()
         {
             Engine engine = Engine.Instance;
+
             engine.Run();
         }
     }
