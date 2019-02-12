@@ -13,15 +13,9 @@ namespace ProjectGates
 {
     class Program
     {
-
-        static void on(object sender, EventArgs args)
-        {
-
-        }
         static void Main()
         {
             Engine engine = Engine.Instance;
-
             engine.Run();
         }
     }

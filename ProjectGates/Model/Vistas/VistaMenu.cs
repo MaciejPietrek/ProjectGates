@@ -49,7 +49,12 @@ namespace ProjectGates.Model.Vistas
             var button2 = new Button("New", 0.05f, 0.3f, 0.15f);
             var button3 = new Button("Load", 0.05f, 0.3f, 0.2f);
             var button4 = new Button("Settings", 0.05f, 0.3f, 0.25f);
-            var button5 = new ButtonExit("Exit", 0.05f, 0.3f, 0.30f);
+            var button5 = new Button("Exit", 0.05f, 0.3f, 0.30f);
+            button5.WhenMouseButtonPressed = ((sender, args) =>
+            {
+                if(button5.Field.Contains(new PGPoint(args.X, args.Y)))
+                    Engine.MainWindow.Close();
+            });
             AddEntity(button1);
             AddEntity(button2);
             AddEntity(button3);
@@ -58,25 +63,5 @@ namespace ProjectGates.Model.Vistas
 
         }
         
-        private class ButtonExit : Button
-        {
-            public ButtonExit(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY) : base(text, fontSize, positionX, positionY)
-            {
-            }
-
-            public override void Connect(Vista vista)
-            {
-                base.Connect(vista);
-
-                vista.WhenMouseButtonPressed = ((sender, args) =>
-                {
-                    var ar = args as MouseButtonEventArgs;
-                    if (Field.Contains(new PGPoint(ar.X, ar.Y)))
-                    {
-                        Engine.MainWindow.Close();
-                    }
-                });
-            }
-        }
     }
 }

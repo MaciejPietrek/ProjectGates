@@ -21,7 +21,12 @@ namespace ProjectGates.Model.Vistas
         {
             if (entity is IEventConsumer consumer)
             {
-                consumer.Connect(this);
+                this.WhenKeyPressed             += consumer.WhenKeyPressed;
+                this.WhenKeyReleased            += consumer.WhenKeyReleased;
+                this.WhenMouseButtonPressed     += consumer.WhenMouseButtonPressed;
+                this.WhenMouseButtonReleased    += consumer.WhenMouseButtonReleased;
+                this.WhenMouseMoved             += consumer.WhenMouseMoved;
+                this.WhenMouseWeelMoved         += consumer.WhenMouseWeelMoved;
             }
             EntityDictionary.Add(ID, entity);
             return entity;
@@ -30,7 +35,12 @@ namespace ProjectGates.Model.Vistas
         {
             if (entity is IEventConsumer consumer)
             {
-                consumer.Connect(this);
+                this.WhenKeyPressed             += consumer.WhenKeyPressed;
+                this.WhenKeyReleased            += consumer.WhenKeyReleased;
+                this.WhenMouseButtonPressed     += consumer.WhenMouseButtonPressed;
+                this.WhenMouseButtonReleased    += consumer.WhenMouseButtonReleased;
+                this.WhenMouseMoved             += consumer.WhenMouseMoved;
+                this.WhenMouseWeelMoved         += consumer.WhenMouseWeelMoved;
             }
             EntitySet.Add(entity);
             return entity;
@@ -83,12 +93,12 @@ namespace ProjectGates.Model.Vistas
         #endregion
 
         #region Event handlers.
-        public EventHandler WhenKeyPressed = null;
-        public EventHandler WhenKeyReleassed = null;
-        public EventHandler WhenMouseButtonPressed = null;
-        public EventHandler WhenMouseButtonReleassed = null;
-        public EventHandler WhenMouseMoved = null;
-        public EventHandler WhenMouseWeelMoved = null;
+        public EventHandler<KeyEventArgs>           WhenKeyPressed = null;
+        public EventHandler<KeyEventArgs>           WhenKeyReleased = null;
+        public EventHandler<MouseButtonEventArgs>   WhenMouseButtonPressed = null;
+        public EventHandler<MouseButtonEventArgs>   WhenMouseButtonReleased = null;
+        public EventHandler<MouseMoveEventArgs>     WhenMouseMoved = null;
+        public EventHandler<MouseWheelEventArgs>    WhenMouseWeelMoved = null;
         #endregion
 
         #region Draw & Update methods.

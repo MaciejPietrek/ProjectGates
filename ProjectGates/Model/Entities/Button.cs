@@ -51,6 +51,37 @@ namespace ProjectGates.Model.Entities
             }
         }
 
+        public EventHandler<KeyEventArgs> WhenKeyPressed
+        {
+            get; set;
+        }
+
+        public EventHandler<KeyEventArgs> WhenKeyReleased
+        {
+            get; set;
+        }
+
+        public EventHandler<MouseButtonEventArgs> WhenMouseButtonPressed
+        {
+            get; set;
+        }
+        
+        public EventHandler<MouseButtonEventArgs> WhenMouseButtonReleased
+        {
+            get; set;
+        }
+
+        public EventHandler<MouseMoveEventArgs> WhenMouseMoved
+        {
+            get; set;
+        }
+
+        public EventHandler<MouseWheelEventArgs> WhenMouseWeelMoved
+        {
+            get; set;
+        }
+
+        
         public Button(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY)
         {
             var tmp = Engine.MainWindow.Size;
@@ -62,25 +93,10 @@ namespace ProjectGates.Model.Entities
             Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * (PGFloat)fontSize);
             Text.Color = Color.White;
 
-
-            PGField bounds = Text.GetGlobalBounds();
-            Shape = (RectangleShape)bounds;
-            Shape.FillColor = Color.Transparent;
-        }
-
-
-        public override void Draw(RenderTarget target, RenderStates states)
-        {
-            target.Draw(Shape);
-            target.Draw(Text);
-        }
-
-        public virtual void Connect(Vista vista)
-        {
-            vista.WhenMouseMoved += ((sender, args) =>
+            WhenMouseMoved = ((sender, args) =>
             {
-                var argument = (MouseMoveEventArgs)args;
-                if (Field.Contains(new Vector2f(argument.X, argument.Y)))
+
+                if (Field.Contains(new Vector2f(args.X, args.Y)))
                 {
                     Color = new Color(200, 200, 200, 200);
                 }
@@ -89,6 +105,16 @@ namespace ProjectGates.Model.Entities
                     Color = Color.Transparent;
                 }
             });
+
+            PGField bounds = Text.GetGlobalBounds();
+            Shape = (RectangleShape)bounds;
+            Shape.FillColor = Color.Transparent;
+        }
+        
+        public override void Draw(RenderTarget target, RenderStates states)
+        {
+            target.Draw(Shape);
+            target.Draw(Text);
         }
     }
 }

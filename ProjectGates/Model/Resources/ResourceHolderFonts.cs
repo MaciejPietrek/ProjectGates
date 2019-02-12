@@ -16,7 +16,7 @@ namespace ProjectGates.Model.Resources
 
         static ResourceFonts()
         {
-            AddGlobalResource(Key.Main, new Font(".\\Model\\Resources\\Fonts\\BLACK.ttf"));
+            AddGlobalResource(Key.Main, new Font(".\\Model\\Resources\\Fonts\\Blacktroops Inline.ttf"));
         }
 
         public override void AddResource(Enum key, string path)
