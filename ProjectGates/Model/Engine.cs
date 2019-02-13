@@ -14,8 +14,5 @@ namespace ProjectGates.Model
             mainWindow = new RenderWindow(VideoMode.DesktopMode, "ProjectGates V0.1");
             
         }
-
-
-
     }
 }
