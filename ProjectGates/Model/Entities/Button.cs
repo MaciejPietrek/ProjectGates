@@ -27,17 +27,16 @@ namespace ProjectGates.Model.Entities
             set
             {
                 Shape.Origin = value;
+                Text.Origin = value;
             }
         }
         public PGField Field
         {
-            get => Shape.Field;
+            get => new PGField(Text.Bounds.Position - Text.Origin, Text.Bounds.Size);
             set
             {
-                Shape.Field = value;
-
-                Text.Origin = Shape.Origin;
-                Text.Position = Shape.Field.Position;
+                Text.Position = value.Position;
+                Shape.Field = Text.Bounds;
             }
         }
         public PGColor Color
@@ -109,21 +108,20 @@ namespace ProjectGates.Model.Entities
 
             WhenMouseMoved = ((sender, args) =>
             {
-
                 if (Field.Contains(new PGVector(args.X, args.Y)))
                 {
                     Color = new PGColor(0.7f, 0.7f, 0.7f, 0.7f);
                 }
                 else
                 {
-                    Color = new PGColor(0, 0, 0, 1);
+                    Color = new PGColor(0, 0, 0, 0);
                 }
             });
 
             Shape = new PGRectangle()
             {
-                Field = Text.Field,
-                Color = new PGColor(0, 0, 0, 1)                
+                Field = Text.Bounds,
+                Color = new PGColor(0, 0, 0, 0)                
             };
         }
         

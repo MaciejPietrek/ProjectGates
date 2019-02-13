@@ -42,7 +42,7 @@ namespace ProjectGates.Model.Vistas
                     {
                         count = 0;
                         OnDraw = DefaultOnDraw;
-                        Engine.Vista = Engine.PG_VistaMenu;
+                        Engine.Vista = Program.PG_VistaMenu;
                         Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
                     }
                 });

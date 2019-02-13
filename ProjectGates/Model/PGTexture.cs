@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model
 {
-    class PGTexture
+    struct PGTexture
     {
         private Texture Texture { get; set; }
 
@@ -20,17 +20,14 @@ namespace ProjectGates.Model
             Texture = new Texture(copy.Texture);
         }
 
-        private PGTexture()
+        private PGTexture(Texture texture)
         {
-
+            Texture = texture;
         }
 
         public static explicit operator PGTexture(Texture texture)
         {
-            return new PGTexture()
-            {
-                Texture = texture
-            };
+            return new PGTexture(texture);
         }
         public static explicit operator Texture(PGTexture texture)
         {

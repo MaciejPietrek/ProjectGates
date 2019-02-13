@@ -19,6 +19,7 @@ namespace ProjectGates.Model
             get => field;
             set
             {
+                field = value;
                 RectangleShape.Position = (Vector2f)value.Position;
                 RectangleShape.Size = (Vector2f)value.Size;
             }
@@ -27,13 +28,21 @@ namespace ProjectGates.Model
         public PGVector Position
         {
             get => field.Position;
-            set => field.Position = value;
+            set
+            {
+                field.Position = value;
+                RectangleShape.Position = (Vector2f)value;
+            }
         }
 
         public PGVector Size
         {
             get => field.Size;
-            set => field.Size = value;
+            set
+            {
+                field.Size = value;
+                RectangleShape.Size = (Vector2f)value;
+            }
         }
 
         public PGColor Color
@@ -46,6 +55,11 @@ namespace ProjectGates.Model
         {
             get => (PGVector)RectangleShape.Origin;
             set => RectangleShape.Origin = (Vector2f)value;
+        }
+
+        public PGRectangle()
+        {
+            RectangleShape = new RectangleShape();
         }
 
         public void Draw(RenderTarget target, RenderStates states)

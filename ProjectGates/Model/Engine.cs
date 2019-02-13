@@ -55,9 +55,6 @@ namespace ProjectGates.Model
             Vista.OnDraw = action;
             Vista.OnDraw += Vista.DefaultOnDraw;
         }
-
-        public static VistaStarted PG_VistaStarted;
-        public static VistaMenu PG_VistaMenu;
         #endregion
         
         #region Contructors.
@@ -69,14 +66,14 @@ namespace ProjectGates.Model
             Instance        = new Engine();
             MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates", Styles.Fullscreen);
             
-            PG_VistaStarted = new VistaStarted();
-            PG_VistaMenu    = new VistaMenu();
-
-            Vista = PG_VistaStarted;
-
             MainWindow.Closed += ((sender, args) =>
             {
                 MainWindow.Close();
+            });
+            MainWindow.KeyPressed += ((sender, args) =>
+            {
+                if (args.Code == Keyboard.Key.Escape)
+                    Engine.MainWindow.Close();
             });
         }
 

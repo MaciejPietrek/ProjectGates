@@ -13,6 +13,11 @@ namespace ProjectGates.Model
         private Text Text { get; set; }
         private PGPercent PGPercent { get; set; }
         
+        public PGText()
+        {
+            Text = new Text();
+        }
+
         public string String
         {
             get => Text.DisplayedString;
@@ -44,11 +49,22 @@ namespace ProjectGates.Model
         }
         public PGField Field
         {
-            get => (PGField)Text.GetGlobalBounds();
+            get
+            {
+                return new PGField((PGVector)Text.Position, new PGVector(Text.GetGlobalBounds().Width, Text.GetGlobalBounds().Height));
+            }
             set
             {
                 Text.Position = (Vector2f)value.Position;
                 Text.CharacterSize = (uint)value.Size.Y;
+            }
+        }
+        public PGField Bounds
+        {
+            get
+            {
+                var a = (PGField)Text.GetGlobalBounds();
+                return new PGField(a.Position + Origin, a.Size);
             }
         }
         public PGColor Color

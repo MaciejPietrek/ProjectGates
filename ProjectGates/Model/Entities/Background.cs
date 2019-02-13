@@ -10,11 +10,11 @@ namespace ProjectGates.Model.Entities
 {
     class Background : IEntity, Drawable, ITransparent
     {
-        private readonly PGSprite sprite = new PGSprite();
+        private PGSprite sprite;
 
         public Background(PGTexture texture, bool fillWidth = true, bool FillHeight = true)
         {
-            sprite.Texture = texture ?? throw new TextureNullReferenceException("Null reference in class Background");
+            sprite = new PGSprite(texture);
            
             var WindowSize = (PGVector)Engine.MainWindow.Size;
 
@@ -47,7 +47,7 @@ namespace ProjectGates.Model.Entities
         {
             get
             {
-                return ((PGFloat)sprite.Color.T / 255);
+                return sprite.Color.T;
             }
             set
             {

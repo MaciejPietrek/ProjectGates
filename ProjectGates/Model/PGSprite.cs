@@ -12,6 +12,12 @@ namespace ProjectGates.Model
     {
         private Sprite Sprite { get; set; }
 
+        public PGSprite(PGTexture texture)
+        {
+            Sprite = new Sprite();
+            Sprite.Texture = (Texture)texture;
+        }
+
         public PGTexture Texture
         {
             get => (PGTexture)Sprite.Texture;
