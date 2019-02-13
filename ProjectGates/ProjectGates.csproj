@@ -93,6 +93,12 @@
     <Compile Include="Model\Entities\Entity.cs" />
     <Compile Include="Model\IEventConsumer.cs" />
     <Compile Include="Model\PG.cs" />
+    <Compile Include="Model\PGColor.cs" />
+    <Compile Include="Model\PGFont.cs" />
+    <Compile Include="Model\PGRectangle.cs" />
+    <Compile Include="Model\PGSprite.cs" />
+    <Compile Include="Model\PGText.cs" />
+    <Compile Include="Model\PGTexture.cs" />
     <Compile Include="Model\Resources\ResourceHolder.cs" />
     <Compile Include="Model\Resources\ResourceHolderFonts.cs" />
     <Compile Include="Model\Resources\ResourceHolderTextures.cs" />

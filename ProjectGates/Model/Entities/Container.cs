@@ -40,52 +40,52 @@ namespace ProjectGates.Model.Entities
         public Container(PGField field, Aligment aligment, T entity)
         {
             _entity = entity;
-            PGPoint tmp;
+            PGVector tmp;
             switch (aligment)
             {
                 case Aligment.UpperLeft:
-                    _entity.Origin = new PGPoint(0, 0);
+                    _entity.Origin = new PGVector(0, 0);
                     tmp = field.Position;
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.Upper:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X / 2, 0);
-                    tmp = new PGPoint(field.Position.X + field.Size.X / 2, field.Position.Y);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X / 2, 0);
+                    tmp = new PGVector(field.Position.X + field.Size.X / 2, field.Position.Y);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.UpperRight:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X, 0);
-                    tmp = new PGPoint(field.Position.X + field.Size.X, field.Position.Y);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X, 0);
+                    tmp = new PGVector(field.Position.X + field.Size.X, field.Position.Y);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.Right:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X, _entity.Field.Size.Y / 2);
-                    tmp = new PGPoint(field.Position.X + field.Size.X, field.Position.Y + field.Size.Y / 2);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X, _entity.Field.Size.Y / 2);
+                    tmp = new PGVector(field.Position.X + field.Size.X, field.Position.Y + field.Size.Y / 2);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.BottomRight:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X, _entity.Field.Size.Y);
-                    tmp = new PGPoint(field.Position.X + field.Size.X, field.Position.Y + field.Size.Y);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X, _entity.Field.Size.Y);
+                    tmp = new PGVector(field.Position.X + field.Size.X, field.Position.Y + field.Size.Y);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.Bottom:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X / 2, _entity.Field.Size.Y);
-                    tmp = new PGPoint(field.Position.X + field.Size.X / 2, field.Position.Y + field.Size.Y);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X / 2, _entity.Field.Size.Y);
+                    tmp = new PGVector(field.Position.X + field.Size.X / 2, field.Position.Y + field.Size.Y);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.BottomLeft:
-                    _entity.Origin = new PGPoint(0, _entity.Field.Size.Y);
-                    tmp = new PGPoint(field.Position.X, field.Position.Y + field.Size.Y);
+                    _entity.Origin = new PGVector(0, _entity.Field.Size.Y);
+                    tmp = new PGVector(field.Position.X, field.Position.Y + field.Size.Y);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.Left:
-                    _entity.Origin = new PGPoint(0, _entity.Field.Size.Y / 2);
-                    tmp = new PGPoint(field.Position.X, field.Position.Y + field.Size.Y / 2);
+                    _entity.Origin = new PGVector(0, _entity.Field.Size.Y / 2);
+                    tmp = new PGVector(field.Position.X, field.Position.Y + field.Size.Y / 2);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
                 case Aligment.Center:
-                    _entity.Origin = new PGPoint(_entity.Field.Size.X / 2, _entity.Field.Size.Y / 2);
-                    tmp = new PGPoint(field.Position.X + field.Size.X / 2, field.Position.Y + field.Size.Y / 2);
+                    _entity.Origin = new PGVector(_entity.Field.Size.X / 2, _entity.Field.Size.Y / 2);
+                    tmp = new PGVector(field.Position.X + field.Size.X / 2, field.Position.Y + field.Size.Y / 2);
                     _entity.Field = new PGField(tmp, _entity.Field.Size);
                     break;
             }

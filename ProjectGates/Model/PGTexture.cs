@@ -11,11 +11,37 @@ namespace ProjectGates.Model
     {
         private Texture Texture { get; set; }
 
-        public PGSize Size
+        public PGTexture(string fileName)
+        {
+            Texture = new Texture(fileName);
+        }
+        public PGTexture(PGTexture copy)
+        {
+            Texture = new Texture(copy.Texture);
+        }
+
+        private PGTexture()
+        {
+
+        }
+
+        public static explicit operator PGTexture(Texture texture)
+        {
+            return new PGTexture()
+            {
+                Texture = texture
+            };
+        }
+        public static explicit operator Texture(PGTexture texture)
+        {
+            return texture.Texture;
+        }
+
+        public PGVector Size
         {
             get
             {
-                return (PGSize)Texture.Size;
+                return (PGVector)Texture.Size;
             }
         }
     }

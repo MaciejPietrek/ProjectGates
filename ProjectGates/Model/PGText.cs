@@ -32,14 +32,14 @@ namespace ProjectGates.Model
                 Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * (float)value);
             }   
         }
-        public PGPoint Origin
+        public PGVector Origin
         {
-            get => (PGPoint)Text.Origin;
+            get => (PGVector)Text.Origin;
             set => Text.Origin = (Vector2f)value;
         }
-        public PGPoint Position
+        public PGVector Position
         {
-            get => (PGPoint)Text.Position;
+            get => (PGVector)Text.Position;
             set => Text.Position = (Vector2f)value;
         }
         public PGField Field

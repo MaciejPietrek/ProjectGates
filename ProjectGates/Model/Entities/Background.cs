@@ -10,13 +10,13 @@ namespace ProjectGates.Model.Entities
 {
     class Background : IEntity, Drawable, ITransparent
     {
-        private readonly Sprite sprite = new Sprite();
+        private readonly PGSprite sprite = new PGSprite();
 
         public Background(PGTexture texture, bool fillWidth = true, bool FillHeight = true)
         {
             sprite.Texture = texture ?? throw new TextureNullReferenceException("Null reference in class Background");
            
-            var WindowSize = Engine.MainWindow.Size;
+            var WindowSize = (PGVector)Engine.MainWindow.Size;
 
             float xScale = 1;
             float yScale = 1;
@@ -37,23 +37,22 @@ namespace ProjectGates.Model.Entities
                 xScale = yScale;
             }
 
-            sprite.Scale = new Vector2f(xScale, yScale);
+            sprite.Scale = new PGVector(xScale, yScale);
 
-            sprite.Origin = (Vector2f)texture.Size / 2;
-            sprite.Position = (Vector2f)WindowSize / 2;
+            sprite.Origin = texture.Size / 2f;
+            sprite.Position = WindowSize / 2;
         }
 
         public PGPercent Transparency
         {
             get
             {
-                return ((PGFloat)sprite.Color.A / 255);
+                return ((PGFloat)sprite.Color.T / 255);
             }
             set
             {
                 var old = sprite.Color;
-                var newColor = new Color(old.R, old.G, old.B, (byte)((float)value * 255));
-                sprite.Color = newColor;
+                sprite.Color = new PGColor(old.R, old.G, old.B, value);
             }
         }
 

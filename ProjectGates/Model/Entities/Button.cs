@@ -18,7 +18,7 @@ namespace ProjectGates.Model.Entities
         protected PGText Text { get; set; }
         protected PGRectangle Shape { get; set; }
 
-        public PGPoint Origin
+        public PGVector Origin
         {
             get
             {
@@ -102,7 +102,7 @@ namespace ProjectGates.Model.Entities
             {
                 String = text,
                 Font = ResourceFonts.GetGlobalResource(ResourceFonts.Key.Main),
-                Position = new PGPoint(tmp.X * positionX, tmp.Y * positionY),
+                Position = new PGVector(tmp.X * positionX, tmp.Y * positionY),
                 Size = fontSize,
                 Color = new PGColor(1, 1, 1)
             };
@@ -110,7 +110,7 @@ namespace ProjectGates.Model.Entities
             WhenMouseMoved = ((sender, args) =>
             {
 
-                if (Field.Contains(new PGPoint(args.X, args.Y)))
+                if (Field.Contains(new PGVector(args.X, args.Y)))
                 {
                     Color = new PGColor(0.7f, 0.7f, 0.7f, 0.7f);
                 }

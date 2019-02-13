@@ -24,13 +24,13 @@ namespace ProjectGates.Model
             }
         }
 
-        public PGPoint Position
+        public PGVector Position
         {
             get => field.Position;
             set => field.Position = value;
         }
 
-        public PGSize Size
+        public PGVector Size
         {
             get => field.Size;
             set => field.Size = value;
@@ -42,9 +42,9 @@ namespace ProjectGates.Model
             set => RectangleShape.FillColor = (Color)value;
         }
 
-        public PGPoint Origin
+        public PGVector Origin
         {
-            get => (PGPoint)RectangleShape.Origin;
+            get => (PGVector)RectangleShape.Origin;
             set => RectangleShape.Origin = (Vector2f)value;
         }
 

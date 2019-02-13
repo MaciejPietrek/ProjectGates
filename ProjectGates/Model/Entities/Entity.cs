@@ -9,7 +9,7 @@ namespace ProjectGates.Model.Entities
 {
     interface IOrigin
     {
-        PGPoint Origin { get; set; }
+        PGVector Origin { get; set; }
     }
 
     interface IColor

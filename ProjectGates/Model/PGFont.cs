@@ -15,6 +15,10 @@ namespace ProjectGates.Model
         {
             Font = new Font(fileName);
         }
+        private PGFont()
+        {
+
+        }
 
         public static explicit operator PGFont(Font font)
         {

@@ -68,80 +68,7 @@ namespace ProjectGates.Model
             return value.value;
         }
     }
-    struct PGPoint
-    {
-        public PGFloat X { get; set; }
-        public PGFloat Y { get; set; }
-        public PGPoint(PGFloat X, PGFloat Y)
-        {
-            this.X = X;
-            this.Y = Y;
-        }
-
-        public static explicit operator PGPoint(Vector2f point)
-        {
-            return new PGPoint(point.X, point.Y);
-        }
-        public static explicit operator PGPoint(Vector2i point)
-        {
-            return new PGPoint(point.X, point.Y);
-        }
-        public static explicit operator PGPoint(Vector2u point)
-        {
-            return new PGPoint(point.X, point.Y);
-        }
-
-        public static explicit operator PGPoint(PGSize size)
-        {
-            return new PGPoint(size.X, size.Y);
-        }
-        public static explicit operator PGPoint(PGVector vector)
-        {
-            return new PGPoint(vector.X, vector.Y);
-        }
-        public static explicit operator Vector2f(PGPoint point)
-        {
-            return new Vector2f(point.X, point.Y);
-        }
-    }
-
-    struct PGSize
-    {
-        public PGFloat X { get; set; }
-        public PGFloat Y { get; set; }
-        public PGSize(PGFloat X, PGFloat Y)
-        {
-            this.X = X;
-            this.Y = Y;
-        }
-
-        public static explicit operator PGSize(Vector2f size)
-        {
-            return new PGSize(size.X, size.Y);
-        }
-        public static explicit operator PGSize(Vector2i size)
-        {
-            return new PGSize(size.X, size.Y);
-        }
-        public static explicit operator PGSize(Vector2u size)
-        {
-            return new PGSize(size.X, size.Y);
-        }
-
-        public static explicit operator PGSize(PGPoint point)
-        {
-            return new PGSize(point.X, point.Y);
-        }
-        public static explicit operator PGSize(PGVector vector)
-        {
-            return new PGSize(vector.X, vector.Y);
-        }
-        public static explicit operator Vector2f(PGSize size)
-        {
-            return new Vector2f(size.X, size.Y);
-        }
-    }
-
+    
     struct PGVector
     {
         public PGFloat X { get; set; }
@@ -164,15 +91,7 @@ namespace ProjectGates.Model
         {
             return new PGVector(vector.X, vector.Y);
         }
-
-        public static explicit operator PGVector(PGPoint point)
-        {
-            return new PGVector(point.X, point.Y);
-        }
-        public static explicit operator PGVector(PGSize size)
-        {
-            return new PGVector(size.X, size.Y);
-        }
+        
         public static explicit operator Vector2f(PGVector vector)
         {
             return new Vector2f(vector.X, vector.Y);
@@ -202,26 +121,26 @@ namespace ProjectGates.Model
 
     struct PGField
     {
-        public PGPoint Position { get; set; }
-        public PGSize Size { get; set; }
-        public PGField(PGPoint position, PGSize size)
+        public PGVector Position { get; set; }
+        public PGVector Size { get; set; }
+        public PGField(PGVector position, PGVector size)
         {
             Position = position;
             Size = size;
         }
-        public PGField(PGPercent positionX, PGPercent positionY, PGPercent sizeX, PGPercent sizeY, PGSize size)
+        public PGField(PGPercent positionX, PGPercent positionY, PGPercent sizeX, PGPercent sizeY, PGVector size)
         {
-            Position = (PGPoint)((PGVector)size * new PGVector(positionX, positionY));
-            Size = (PGSize)((PGVector)size * new PGVector(sizeX, sizeY));
+            Position = (PGVector)((PGVector)size * new PGVector(positionX, positionY));
+            Size = (PGVector)((PGVector)size * new PGVector(sizeX, sizeY));
         }
 
         public static explicit operator PGField(RectangleShape field)
         {
-            return new PGField((PGPoint)field.Position, (PGSize)field.Size);
+            return new PGField((PGVector)field.Position, (PGVector)field.Size);
         }
         public static explicit operator PGField(FloatRect field)
         {
-            return new PGField(new PGPoint(field.Left, field.Top), new PGSize(field.Width, field.Height));
+            return new PGField(new PGVector(field.Left, field.Top), new PGVector(field.Width, field.Height));
         }
 
         public static explicit operator RectangleShape(PGField field)
@@ -231,7 +150,7 @@ namespace ProjectGates.Model
             return result;
         }
 
-        public bool Contains(PGPoint point)
+        public bool Contains(PGVector point)
         {
             if (point.X > Position.X + Size.X)
                 return false;
