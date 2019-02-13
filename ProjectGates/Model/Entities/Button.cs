@@ -11,107 +11,123 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Entities
 {
-    class Button : ActiveEntity, IColor, IField, ITransparent, IEventConsumer
+    class Button : IActiveEntity, IColor, IField, ITransparent, IEventConsumer, IOrigin
     {
 
 
-        protected Text Text { get; set; }
-        protected RectangleShape Shape { get; set; }
-        
-        public PGField Field
+        protected PGText Text { get; set; }
+        protected PGRectangle Shape { get; set; }
+
+        public PGPoint Origin
         {
             get
             {
-                return new PGField(Shape.Position, Shape.Size);
-            }
-        }
-        public Color Color
-        {
-            get
-            {
-                return Shape.FillColor;
+                return Shape.Origin;
             }
             set
             {
-                Shape.FillColor = value;
+                Shape.Origin = value;
             }
         }
+        public PGField Field
+        {
+            get => Shape.Field;
+            set
+            {
+                Shape.Field = value;
 
+                Text.Origin = Shape.Origin;
+                Text.Position = Shape.Field.Position;
+            }
+        }
+        public PGColor Color
+        {
+            get
+            {
+                return Shape.Color;
+            }
+            set
+            {
+                Shape.Color = value;
+            }
+        }
         public PGPercent Transparency
         {
             get
             {
-                return ((PGFloat)Text.Color.A / 255);
+                return Text.Color.T;
             }
             set
             {
                 var old = Text.Color;
-                var newColor = new Color(old.R, old.G, old.B, (byte)(value * 255));
-                Text.Color = newColor;
+                Text.Color = new PGColor(old.R, old.G, old.B, value);
             }
         }
 
-        public EventHandler<KeyEventArgs> WhenKeyPressed
+        public EventHandler<KeyEventArgs>           WhenKeyPressed
         {
             get; set;
         }
 
-        public EventHandler<KeyEventArgs> WhenKeyReleased
+        public EventHandler<KeyEventArgs>           WhenKeyReleased
         {
             get; set;
         }
 
-        public EventHandler<MouseButtonEventArgs> WhenMouseButtonPressed
+        public EventHandler<MouseButtonEventArgs>   WhenMouseButtonPressed
         {
             get; set;
         }
         
-        public EventHandler<MouseButtonEventArgs> WhenMouseButtonReleased
+        public EventHandler<MouseButtonEventArgs>   WhenMouseButtonReleased
         {
             get; set;
         }
 
-        public EventHandler<MouseMoveEventArgs> WhenMouseMoved
+        public EventHandler<MouseMoveEventArgs>     WhenMouseMoved
         {
             get; set;
         }
 
-        public EventHandler<MouseWheelEventArgs> WhenMouseWeelMoved
+        public EventHandler<MouseWheelEventArgs>    WhenMouseWeelMoved
         {
             get; set;
         }
-
         
         public Button(string text, PGPercent fontSize, PGPercent positionX, PGPercent positionY)
         {
             var tmp = Engine.MainWindow.Size;
 
-            Text = new Text();
-            Text.DisplayedString = text;
-            Text.Font = ResourceFonts.GetGlobalResource(ResourceFonts.Key.Main);
-            Text.Position = new Vector2f(tmp.X * (PGFloat)positionX, tmp.Y * (PGFloat)positionY);
-            Text.CharacterSize = (uint)(Engine.MainWindow.Size.Y * (PGFloat)fontSize);
-            Text.Color = Color.White;
+            Text = new PGText
+            {
+                String = text,
+                Font = ResourceFonts.GetGlobalResource(ResourceFonts.Key.Main),
+                Position = new PGPoint(tmp.X * positionX, tmp.Y * positionY),
+                Size = fontSize,
+                Color = new PGColor(1, 1, 1)
+            };
 
             WhenMouseMoved = ((sender, args) =>
             {
 
-                if (Field.Contains(new Vector2f(args.X, args.Y)))
+                if (Field.Contains(new PGPoint(args.X, args.Y)))
                 {
-                    Color = new Color(200, 200, 200, 200);
+                    Color = new PGColor(0.7f, 0.7f, 0.7f, 0.7f);
                 }
                 else
                 {
-                    Color = Color.Transparent;
+                    Color = new PGColor(0, 0, 0, 1);
                 }
             });
 
-            PGField bounds = Text.GetGlobalBounds();
-            Shape = (RectangleShape)bounds;
-            Shape.FillColor = Color.Transparent;
+            Shape = new PGRectangle()
+            {
+                Field = Text.Field,
+                Color = new PGColor(0, 0, 0, 1)                
+            };
         }
         
-        public override void Draw(RenderTarget target, RenderStates states)
+        public void Draw(RenderTarget target, RenderStates states)
         {
             target.Draw(Shape);
             target.Draw(Text);

@@ -67,7 +67,7 @@ namespace ProjectGates.Model
             timePerFrame    = Time.FromSeconds(1.0f / 30.0f);
             // Private public field initializations.
             Instance        = new Engine();
-            MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates");
+            MainWindow      = new RenderWindow(VideoMode.DesktopMode, "ProjectGates", Styles.Fullscreen);
             
             PG_VistaStarted = new VistaStarted();
             PG_VistaMenu    = new VistaMenu();

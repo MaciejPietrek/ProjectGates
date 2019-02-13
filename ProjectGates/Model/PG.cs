@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model
 {
-    struct PGFloat
+    public struct PGFloat
     {
         public float Value { get; set; }
         public PGFloat(float value)
@@ -25,7 +25,7 @@ namespace ProjectGates.Model
         }
     }
 
-    struct PGPercent
+    public struct PGPercent
     {
         private float value;
         public float Value
@@ -78,15 +78,15 @@ namespace ProjectGates.Model
             this.Y = Y;
         }
 
-        public static implicit operator PGPoint(Vector2f point)
+        public static explicit operator PGPoint(Vector2f point)
         {
             return new PGPoint(point.X, point.Y);
         }
-        public static implicit operator PGPoint(Vector2i point)
+        public static explicit operator PGPoint(Vector2i point)
         {
             return new PGPoint(point.X, point.Y);
         }
-        public static implicit operator PGPoint(Vector2u point)
+        public static explicit operator PGPoint(Vector2u point)
         {
             return new PGPoint(point.X, point.Y);
         }
@@ -115,15 +115,15 @@ namespace ProjectGates.Model
             this.Y = Y;
         }
 
-        public static implicit operator PGSize(Vector2f size)
+        public static explicit operator PGSize(Vector2f size)
         {
             return new PGSize(size.X, size.Y);
         }
-        public static implicit operator PGSize(Vector2i size)
+        public static explicit operator PGSize(Vector2i size)
         {
             return new PGSize(size.X, size.Y);
         }
-        public static implicit operator PGSize(Vector2u size)
+        public static explicit operator PGSize(Vector2u size)
         {
             return new PGSize(size.X, size.Y);
         }
@@ -152,15 +152,15 @@ namespace ProjectGates.Model
             this.Y = Y;
         }
 
-        public static implicit operator PGVector(Vector2f vector)
+        public static explicit operator PGVector(Vector2f vector)
         {
             return new PGVector(vector.X, vector.Y);
         }
-        public static implicit operator PGVector(Vector2i vector)
+        public static explicit operator PGVector(Vector2i vector)
         {
             return new PGVector(vector.X, vector.Y);
         }
-        public static implicit operator PGVector(Vector2u vector)
+        public static explicit operator PGVector(Vector2u vector)
         {
             return new PGVector(vector.X, vector.Y);
         }
@@ -194,6 +194,10 @@ namespace ProjectGates.Model
         {
             return new PGVector(first.X / second.X, first.Y / second.Y);
         }
+        public static PGVector operator /(PGVector first, float second)
+        {
+            return new PGVector(first.X / second, first.Y / second);
+        }
     }
 
     struct PGField
@@ -205,12 +209,17 @@ namespace ProjectGates.Model
             Position = position;
             Size = size;
         }
-
-        public static implicit operator PGField(RectangleShape field)
+        public PGField(PGPercent positionX, PGPercent positionY, PGPercent sizeX, PGPercent sizeY, PGSize size)
         {
-            return new PGField(field.Position, field.Size);
+            Position = (PGPoint)((PGVector)size * new PGVector(positionX, positionY));
+            Size = (PGSize)((PGVector)size * new PGVector(sizeX, sizeY));
         }
-        public static implicit operator PGField(FloatRect field)
+
+        public static explicit operator PGField(RectangleShape field)
+        {
+            return new PGField((PGPoint)field.Position, (PGSize)field.Size);
+        }
+        public static explicit operator PGField(FloatRect field)
         {
             return new PGField(new PGPoint(field.Left, field.Top), new PGSize(field.Width, field.Height));
         }

@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Model\Entities\Background.cs" />
     <Compile Include="Model\Entities\Button.cs" />
+    <Compile Include="Model\Entities\Container.cs" />
     <Compile Include="Model\Errors.cs" />
     <Compile Include="Model\Engine.cs" />
     <Compile Include="Model\Entities\Entity.cs" />

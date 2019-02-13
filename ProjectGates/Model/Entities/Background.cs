@@ -12,7 +12,7 @@ namespace ProjectGates.Model.Entities
     {
         private readonly Sprite sprite = new Sprite();
 
-        public Background(Texture texture, bool fillWidth = true, bool FillHeight = true)
+        public Background(PGTexture texture, bool fillWidth = true, bool FillHeight = true)
         {
             sprite.Texture = texture ?? throw new TextureNullReferenceException("Null reference in class Background");
            

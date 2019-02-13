@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Resources
 {
-    class ResourceFonts : ResourceHolder<Font>
+    class ResourceFonts : ResourceHolder<PGFont>
     {
         public enum Key
         {
@@ -16,17 +16,17 @@ namespace ProjectGates.Model.Resources
 
         static ResourceFonts()
         {
-            AddGlobalResource(Key.Main, new Font(".\\Model\\Resources\\Fonts\\Blacktroops Inline.ttf"));
+            AddGlobalResource(Key.Main, new PGFont(".\\Model\\Resources\\Fonts\\Blacktroops Inline.ttf"));
         }
 
         public override void AddResource(Enum key, string path)
         {
-            resource.Add(key, new Font(path));
+            resource.Add(key, new PGFont(path));
         }
 
-        public static new Font GetGlobalResource(Enum key)
+        public static new PGFont GetGlobalResource(Enum key)
         {
-            globalResource.TryGetValue(key, out Font result);
+            globalResource.TryGetValue(key, out PGFont result);
             return result;
         }
     }

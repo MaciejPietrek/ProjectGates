@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 
 namespace ProjectGates.Model.Entities
 {
+    interface IOrigin
+    {
+        PGPoint Origin { get; set; }
+    }
+
     interface IColor
     {
-        Color Color { get; set; }
-    }
+        PGColor Color { get; set; }
+    } 
 
     interface IField
     {
-        PGField Field { get; }
+        PGField Field { get; set; }
     }
 
     interface ITransparent
@@ -32,18 +37,18 @@ namespace ProjectGates.Model.Entities
 
     }
 
-    abstract class PassiveEntity : IEntity
+    interface IPassiveEntity : IEntity
     {
-        public abstract void Draw(RenderTarget target, RenderStates states);
+
     }
 
-    abstract class ActiveEntity : IEntity
+    interface IActiveEntity : IEntity
     {
-        public abstract void Draw(RenderTarget target, RenderStates states);
+
     }
 
-    abstract class EphemeralEntity : IEntity
+    interface IEphemeralEntity : IEntity
     {
-        public abstract void Draw(RenderTarget target, RenderStates states);
+
     }
 }

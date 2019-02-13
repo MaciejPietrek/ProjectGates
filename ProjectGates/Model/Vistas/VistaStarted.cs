@@ -25,8 +25,7 @@ namespace ProjectGates.Model.Vistas
 
             WhenKeyPressed = ((sender, args) =>
             {
-                #region State change
-                var arguments = (KeyEventArgs)args;
+                var arguments = args;
                 OnDraw += ((target, state) =>
                 {
                     int n = 300;
@@ -37,7 +36,7 @@ namespace ProjectGates.Model.Vistas
                     foreach (var entity in Entities)
                     {
                         if (entity is ITransparent e)
-                            e.Transparency = (PGPercent)((float)e.Transparency - (float)1 / 200);
+                            e.Transparency = (PGPercent)(e.Transparency - (float)1 / 200);
                     }
                     if (count >= n)
                     {
@@ -47,7 +46,6 @@ namespace ProjectGates.Model.Vistas
                         Engine.MainWindow.SetView(Engine.MainWindow.DefaultView);
                     }
                 });
-                #endregion
             });
         }
     }
