@@ -85,37 +85,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Entities\Background.cs" />
-    <Compile Include="Model\Entities\Button.cs" />
-    <Compile Include="Model\Entities\Container.cs" />
-    <Compile Include="Model\Errors.cs" />
+    <Compile Include="Main\Program.cs" />
     <Compile Include="Model\Engine.cs" />
-    <Compile Include="Model\Entities\Entity.cs" />
-    <Compile Include="Model\IEventConsumer.cs" />
-    <Compile Include="Model\PG.cs" />
-    <Compile Include="Model\PGColor.cs" />
-    <Compile Include="Model\PGFont.cs" />
-    <Compile Include="Model\PGRectangle.cs" />
-    <Compile Include="Model\PGSprite.cs" />
-    <Compile Include="Model\PGText.cs" />
-    <Compile Include="Model\PGTexture.cs" />
-    <Compile Include="Model\Resources\ResourceHolder.cs" />
-    <Compile Include="Model\Resources\ResourceHolderFonts.cs" />
-    <Compile Include="Model\Resources\ResourceHolderTextures.cs" />
-    <Compile Include="Model\Vistas\Vista.cs" />
-    <Compile Include="Model\Vistas\VistaMenu.cs" />
-    <Compile Include="Model\Vistas\VistaStarted.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Model\Vista.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Model\Resources\Fonts\BLACK.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Model\Resources\Fonts\Blacktroops Inline.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="csfml-audio-2.dll">
@@ -132,18 +108,6 @@
     </Content>
     <Content Include="libsndfile-1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\Resources\Textures\BACKGROUND.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\Resources\Textures\BACKGROUND_GRID.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\Resources\Textures\ERROR_TEXTURE_MISSING.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\Resources\Textures\LOGO.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="openal32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -167,10 +131,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Entities\Active\" />
-    <Folder Include="Model\Entities\Ephemeral\" />
-    <Folder Include="Model\Entities\Passive\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
