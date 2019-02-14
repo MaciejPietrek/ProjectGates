@@ -17,7 +17,7 @@ namespace ProjectGates.Model.Vistas
         private Dictionary<string, IEntity> EntityDictionary { get; set; }
         private HashSet<IEntity> EntitySet { get; set; }
 
-        protected IEntity AddEntity(IEntity entity, string ID)
+        public IEntity AddEntity(IEntity entity, string ID)
         {
             if (entity is IEventConsumer consumer)
             {
@@ -31,7 +31,7 @@ namespace ProjectGates.Model.Vistas
             EntityDictionary.Add(ID, entity);
             return entity;
         }
-        protected IEntity AddEntity(IEntity entity)
+        public IEntity AddEntity(IEntity entity)
         {
             if (entity is IEventConsumer consumer)
             {
@@ -45,7 +45,7 @@ namespace ProjectGates.Model.Vistas
             EntitySet.Add(entity);
             return entity;
         }
-        protected IEntity GetEntity(string ID)
+        public IEntity GetEntity(string ID)
         {
             IEntity result = null;
             EntityDictionary.TryGetValue(ID, out result);

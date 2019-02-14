@@ -46,17 +46,33 @@ namespace ProjectGates.Model.Vistas
             AddEntity(new Background(ResourceTextures.GetGlobalResource(ResourceTextures.Key.Background)));
 
             var button1 = new Button("Continue", 0.05f, 0.3f, 0.1f);
+            button1.WhenMouseButtonPressed = ((sender, args) =>
+            {
+                if (button1.Bounds.Contains(new PGVector(args.X, args.Y)))
+                    Popup.Pop(new Button[] { new Button("ok", 0.05f) }, "Not implemented");
+            });
             var button2 = new Button("New", 0.05f, 0.3f, 0.15f);
+            button2.WhenMouseButtonPressed = ((sender, args) =>
+            {
+                if (button2.Bounds.Contains(new PGVector(args.X, args.Y)))
+                    Popup.Pop(new Button[] { new Button("ok", 0.05f) }, "Not implemented");
+            });
             var button3 = new Button("Load", 0.05f, 0.3f, 0.2f);
+            button3.WhenMouseButtonPressed = ((sender, args) =>
+            {
+                if (button3.Bounds.Contains(new PGVector(args.X, args.Y)))
+                    Popup.Pop(new Button[] { new Button("ok", 0.15f), new Button("ok", 0.10f), new Button("ok", 0.5f) }, "Not implemented");
+            });
             var button4 = new Button("Settings", 0.05f, 0.3f, 0.25f);
             button4.WhenMouseButtonPressed = ((sender, args) =>
             {
-
+                if (button4.Bounds.Contains(new PGVector(args.X, args.Y)))
+                    Popup.Pop(new Button[] { new Button("ok", 0.05f) }, "Not implemented");
             });
             var button5 = new Button("Exit", 0.05f, 0.3f, 0.30f);
             button5.WhenMouseButtonPressed = ((sender, args) =>
             {
-                if(button5.Field.Contains(new PGVector(args.X, args.Y)))
+                if(button5.Bounds.Contains(new PGVector(args.X, args.Y)))
                     Engine.MainWindow.Close();
             });
             

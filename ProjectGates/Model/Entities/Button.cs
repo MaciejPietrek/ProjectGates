@@ -22,22 +22,25 @@ namespace ProjectGates.Model.Entities
         {
             get
             {
-                return Shape.Origin;
+                return Text.Origin;
             }
             set
             {
-                Shape.Origin = value;
                 Text.Origin = value;
             }
         }
         public PGField Field
         {
-            get => new PGField(Text.Bounds.Position - Text.Origin, Text.Bounds.Size);
+            get => new PGField(Text.Field.Position, Text.Bounds.Size);
             set
             {
                 Text.Position = value.Position;
                 Shape.Field = Text.Bounds;
             }
+        }
+        public PGField Bounds
+        {
+            get => new PGField(Text.Bounds.Position, Text.Bounds.Size);
         }
         public PGColor Color
         {
@@ -106,9 +109,15 @@ namespace ProjectGates.Model.Entities
                 Color = new PGColor(1, 1, 1)
             };
 
+            Shape = new PGRectangle()
+            {
+                Field = Text.Bounds,
+                Color = new PGColor(0, 0, 0, 0)                
+            };
+
             WhenMouseMoved = ((sender, args) =>
             {
-                if (Field.Contains(new PGVector(args.X, args.Y)))
+                if (Bounds.Contains(new PGVector(args.X, args.Y)))
                 {
                     Color = new PGColor(0.7f, 0.7f, 0.7f, 0.7f);
                 }
@@ -117,12 +126,12 @@ namespace ProjectGates.Model.Entities
                     Color = new PGColor(0, 0, 0, 0);
                 }
             });
+        }
 
-            Shape = new PGRectangle()
-            {
-                Field = Text.Bounds,
-                Color = new PGColor(0, 0, 0, 0)                
-            };
+        public Button(string text, PGPercent fontSize)
+            : this(text, fontSize, 0f, 0f)
+        {
+            ;
         }
         
         public void Draw(RenderTarget target, RenderStates states)

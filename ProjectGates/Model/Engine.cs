@@ -41,12 +41,15 @@ namespace ProjectGates.Model
                     MainWindow.MouseWheelMoved -= Vista.WhenMouseWeelMoved;
                 }
                 vista = value;
-                MainWindow.KeyPressed += Vista.WhenKeyPressed;
-                MainWindow.KeyReleased += Vista.WhenKeyReleased;
-                MainWindow.MouseButtonPressed += Vista.WhenMouseButtonPressed;
-                MainWindow.MouseButtonReleased += Vista.WhenMouseButtonReleased;
-                MainWindow.MouseMoved += Vista.WhenMouseMoved;
-                MainWindow.MouseWheelMoved += Vista.WhenMouseWeelMoved;
+                if (vista != null)
+                {
+                    MainWindow.KeyPressed += Vista.WhenKeyPressed;
+                    MainWindow.KeyReleased += Vista.WhenKeyReleased;
+                    MainWindow.MouseButtonPressed += Vista.WhenMouseButtonPressed;
+                    MainWindow.MouseButtonReleased += Vista.WhenMouseButtonReleased;
+                    MainWindow.MouseMoved += Vista.WhenMouseMoved;
+                    MainWindow.MouseWheelMoved += Vista.WhenMouseWeelMoved;
+                }
             }
         }
         public static void SetVista(Vista vista, Action<RenderTarget, RenderStates> action)
@@ -54,6 +57,16 @@ namespace ProjectGates.Model
             Vista = vista;
             Vista.OnDraw = action;
             Vista.OnDraw += Vista.DefaultOnDraw;
+        }
+
+        public static void Connect(Vista vista)
+        {
+            Vista = vista;
+        }
+
+        public static void Disconnect()
+        {
+            Vista = null;
         }
         #endregion
         
@@ -101,7 +114,7 @@ namespace ProjectGates.Model
             }
         }
 
-        private void Render()
+        public void Render()
         {
             MainWindow.Clear(Color.Black);
             MainWindow.Draw(Vista);

@@ -51,7 +51,7 @@ namespace ProjectGates.Model
         {
             get
             {
-                return new PGField((PGVector)Text.Position, new PGVector(Text.GetGlobalBounds().Width, Text.GetGlobalBounds().Height));
+                return new PGField(Position, new PGVector(Text.GetGlobalBounds().Width, Text.GetGlobalBounds().Height));
             }
             set
             {
@@ -64,7 +64,7 @@ namespace ProjectGates.Model
             get
             {
                 var a = (PGField)Text.GetGlobalBounds();
-                return new PGField(a.Position + Origin, a.Size);
+                return new PGField(a.Position, a.Size);
             }
         }
         public PGColor Color

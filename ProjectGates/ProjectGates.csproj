@@ -100,10 +100,12 @@
     <Compile Include="Model\PGSprite.cs" />
     <Compile Include="Model\PGText.cs" />
     <Compile Include="Model\PGTexture.cs" />
+    <Compile Include="Model\Entities\Popup.cs" />
     <Compile Include="Model\Resources\ResourceHolder.cs" />
     <Compile Include="Model\Resources\ResourceHolderFonts.cs" />
     <Compile Include="Model\Resources\ResourceHolderTextures.cs" />
     <Compile Include="Model\Vistas\Vista.cs" />
+    <Compile Include="Model\Vistas\VistaBlank.cs" />
     <Compile Include="Model\Vistas\VistaMenu.cs" />
     <Compile Include="Model\Vistas\VistaStarted.cs" />
     <Compile Include="Program.cs" />

@@ -25,6 +25,11 @@ namespace ProjectGates.Model
             }
         }
 
+        public PGField Bounds
+        {
+            get => new PGField(field.Position - Origin, field.Size);
+        }
+
         public PGVector Position
         {
             get => field.Position;

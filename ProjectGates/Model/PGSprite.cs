@@ -38,7 +38,12 @@ namespace ProjectGates.Model
 
         public PGField Field
         {
-            get => new PGField((PGVector)Sprite.Position, (PGVector)((PGVector)Sprite.Texture.Size * Scale));
+            get => new PGField(Position, Texture.Size);
+        }
+
+        public PGField Bounds
+        {
+            get => new PGField(Position - Origin * Scale, Texture.Size * Scale);
         }
 
         public PGVector Origin
